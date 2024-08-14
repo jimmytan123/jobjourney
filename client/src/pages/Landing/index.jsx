@@ -1,13 +1,13 @@
 import { StyledWrapper } from './styled';
-import landingImg from '../../assets/images/landing-img.webp';
-import logo from '../../assets/images/logo.svg';
+import landingImg from '../../assets/images/landing-img.svg';
 import { Link } from 'react-router-dom';
+import Logo from '../../components/Logo';
 
 const Landing = () => {
   return (
     <StyledWrapper>
       <nav>
-        <img src={logo} alt="job journey" className="logo" />
+        <Logo />
       </nav>
       <div className="container page">
         <div className="info">

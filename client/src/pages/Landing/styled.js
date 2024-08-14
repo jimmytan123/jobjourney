@@ -23,12 +23,6 @@ export const StyledWrapper = styled.div`
     margin-top: -3rem;
   }
 
-  .logo {
-    width: 6rem;
-    max-height: 100%;
-    object-fit: contain;
-  }
-
   .main-img {
     display: none;
   }
