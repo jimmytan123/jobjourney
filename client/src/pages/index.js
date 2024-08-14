@@ -1,3 +1,5 @@
+// Root file for pages
+
 export { default as DashboardLayout } from './DashboardLayout';
 export { default as Landing } from './Landing';
 export { default as HomeLayout } from './HomeLayout';
