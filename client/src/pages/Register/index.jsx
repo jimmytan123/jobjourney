@@ -19,6 +19,13 @@ const Register = () => {
         <FormRow name="location" type="text" defaultValue="Vancouver" />
         <FormRow name="email" type="email" defaultValue="john@email.com" />
         <FormRow name="password" type="password" defaultValue="password" />
+        <FormRow
+          name="confirmPassword"
+          labelText="Confirm Password"
+          type="password"
+          defaultValue="password"
+        />
+
         <button type="submit" className="btn btn-block">
           Submit
         </button>
