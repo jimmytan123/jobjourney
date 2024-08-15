@@ -112,7 +112,7 @@ const Wrapper = styled.div`
     border: none;
     padding: 0.5rem;
     color: var(--text-color);
-    background-color: var(--grey-300);
+    background-color: var(--background-secondary-color);
     cursor: pointer;
     text-transform: capitalize;
   }

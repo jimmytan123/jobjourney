@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Logo from './Logo';
 import { useDashboardContext } from '../pages/DashboardLayout';
 import NavUserDropDown from './NavUserDropDown';
+import ThemeToggle from './ThemeToggle';
 
 const Navbar = () => {
   const { toggleSidebar } = useDashboardContext();
@@ -22,6 +23,7 @@ const Navbar = () => {
           <h4 className="logo-text">Dashboard</h4>
         </div>
         <div className="btn-container">
+          <ThemeToggle />
           <NavUserDropDown />
         </div>
       </div>
@@ -76,6 +78,7 @@ const Wrapper = styled.nav`
   .btn-container {
     display: flex;
     align-items: center;
+    gap: 1.5rem;
   }
 
   @media (min-width: 1024px) {

@@ -12,6 +12,10 @@ import {
   Profile,
   Admin,
 } from './pages';
+import { checkAndSetDefaultTheme } from './utils/checkTheme';
+
+// Check UI theme settings when initialize the App, and set theme
+checkAndSetDefaultTheme();
 
 const router = createBrowserRouter([
   {
