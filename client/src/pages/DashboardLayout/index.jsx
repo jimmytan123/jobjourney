@@ -8,6 +8,7 @@ import { Wrapper } from './styled';
 // Create a React Context for dashboard items
 const DashboardContext = createContext();
 
+// Layout component for nav, sidebar, body content and shared states
 const DashboardLayout = () => {
   // Mock User Data
   const user = { name: 'John' };
@@ -41,7 +42,7 @@ const DashboardLayout = () => {
       <Wrapper>
         <main className="dashboard">
           <SmallSidebar />
-          {/* <LargeSidebar /> */}
+          <LargeSidebar />
           <div>
             <Navbar />
             <div className="dashboard-content">

@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
   @media (min-width: 1024px) {
     .dashboard {
       // Update to 2 columns layout
-      // auto -> width of the large side bar
+      // auto -> based on the width of the large side bar
       grid-template-columns: auto 1fr;
     }
 
