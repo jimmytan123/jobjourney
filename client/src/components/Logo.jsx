@@ -2,7 +2,7 @@ import logo from '../assets/images/logo.svg';
 import styled from 'styled-components';
 
 const Logo = () => {
-  return <StyledImg src={logo} alt="JobJourney" />;
+  return <StyledImg src={logo} alt="JobJourney" className="logo" />;
 };
 
 export default Logo;
