@@ -20,7 +20,6 @@ const DashboardLayout = () => {
   };
 
   const toggleSidebar = () => {
-    console.log('toggle sidebar');
     setShowSidebar((showSidebar) => !showSidebar);
   };
 

@@ -2,8 +2,7 @@ import { useDashboardContext } from '../pages/DashboardLayout';
 import styled from 'styled-components';
 import { IoClose } from 'react-icons/io5';
 import Logo from './Logo';
-import links from '../utils/navLinks';
-import { NavLink } from 'react-router-dom'; //https://reactrouter.com/en/main/components/nav-link
+import NavLinks from './NavLinks';
 
 const SmallSidebar = () => {
   const { showSidebar, toggleSidebar } = useDashboardContext();
@@ -32,22 +31,7 @@ const SmallSidebar = () => {
               <Logo />
             </header>
           </div>
-          <div className="nav-links">
-            {links.map((link) => {
-              return (
-                <NavLink
-                  to={link.path}
-                  key={link.text}
-                  className="nav-link"
-                  onClick={handleCloseSideBar}
-                  end
-                >
-                  <span className="icon">{link.icon}</span>
-                  {link.text}
-                </NavLink>
-              );
-            })}
-          </div>
+          <NavLinks />
         </div>
       </div>
       <div className="backdrop"></div>
