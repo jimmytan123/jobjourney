@@ -2,6 +2,7 @@ import { CgMenuLeftAlt } from 'react-icons/cg';
 import styled from 'styled-components';
 import Logo from './Logo';
 import { useDashboardContext } from '../pages/DashboardLayout';
+import NavUserDropDown from './NavUserDropDown';
 
 const Navbar = () => {
   const { toggleSidebar } = useDashboardContext();
@@ -20,7 +21,9 @@ const Navbar = () => {
           <Logo />
           <h4 className="logo-text">Dashboard</h4>
         </div>
-        <div className="btn-container">toggle/logout</div>
+        <div className="btn-container">
+          <NavUserDropDown />
+        </div>
       </div>
     </Wrapper>
   );
