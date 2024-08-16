@@ -1,88 +1,92 @@
-import { nanoid } from 'nanoid';
-
-// Local Data
-let jobs = [
-  {
-    id: nanoid(),
-    company: 'Apple',
-    position: 'Back-end',
-  },
-  {
-    id: nanoid(),
-    company: 'Meta',
-    position: 'Web Dev',
-  },
-];
+import Job from '../models/Job.js';
 
 // GET ALL JOBS
 export const getAllJobs = async (req, res, next) => {
-  res.status(200).json({ jobs });
+  try {
+    const jobs = await Job.find();
+    res.status(200).json({ jobs });
+  } catch (err) {
+    next(err);
+  }
 };
 
 // CREATE JOB
 export const createJob = async (req, res, next) => {
-  const company = req.body.company;
-  const position = req.body.position;
+  const { company, position } = req.body;
 
-  if (!company || !position) {
-    return res
-      .status(400)
-      .json({ message: 'Missing company and position value.' });
+  try {
+    const job = await Job.create({
+      company,
+      position,
+    });
+
+    res.status(201).json({ job: job });
+  } catch (err) {
+    next(err);
   }
-
-  const newJob = { id: nanoid(10), company, position };
-  jobs.push(newJob);
-  res.status(201).json({ job: newJob });
 };
 
 // GET SINGLE JOB
-export const getJob = async (req, res) => {
+export const getJob = async (req, res, next) => {
   const { id } = req.params;
 
-  const job = jobs.find((job) => job.id === id);
+  try {
+    const job = await Job.findById(id);
 
-  if (!job) {
-    return res.status(404).json({ message: `No job with ${id}` });
+    if (!job) {
+      const error = new Error(`No job with ${id}`);
+      error.statusCode = 404;
+      throw error;
+    }
+
+    res.status(200).json({ job });
+  } catch (err) {
+    next(err);
   }
-
-  res.status(200).json({ job });
 };
 
 // EDIT JOB
-export const updateJob = async (req, res) => {
+export const updateJob = async (req, res, next) => {
   const { id } = req.params;
   const { company, position } = req.body;
 
-  if (!company || !position) {
-    return res
-      .status(400)
-      .json({ message: 'Missing company and position value.' });
+  try {
+    const updatedJob = await Job.findByIdAndUpdate(
+      id,
+      {
+        company,
+        position,
+      },
+      { new: true } // Then will return the job after the update was applied
+    );
+
+    if (!updatedJob) {
+      const error = new Error(`No job with ${id}`);
+      error.statusCode = 404;
+      throw error;
+    }
+
+    res.status(200).json({ message: 'Job Updated', updatedJob });
+  } catch (err) {
+    next(err);
   }
-
-  const job = jobs.find((job) => job.id === id);
-
-  if (!job) {
-    return res.status(404).json({ message: `No job with ${id}` });
-  }
-
-  job.company = company;
-  job.position = position;
-
-  res.status(200).json({ message: 'Job Updated', job });
 };
 
 // DELETE JOB
-export const deleteJob = async (req, res) => {
+export const deleteJob = async (req, res, next) => {
   const { id } = req.params;
 
-  const job = jobs.find((job) => job.id === id);
+  try {
+    const removedJob = await Job.findByIdAndDelete(id);
 
-  if (!job) {
-    return res.status(404).json({ message: `No job with ${id}` });
+    if (!removedJob) {
+      const error = new Error(`No job with ${id}`);
+      error.statusCode = 404;
+      throw error;
+    }
+
+    res.status(200).json({ message: 'Job Deleted' });
+  } catch (err) {
+    next(err);
   }
-
-  const updatedJobs = jobs.filter((job) => job.id !== id);
-  jobs = updatedJobs;
-
-  res.status(200).json({ message: 'Job Deleted' });
 };

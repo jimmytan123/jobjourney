@@ -2,6 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import { customErrorHandler } from './middleware/errorsMiddleware.js';
 
 // Import routers
 import jobRouter from './routes/jobRouter.js';
@@ -28,9 +29,7 @@ app.use('*', (req, res) => {
 });
 
 // Custom Error Route
-app.use((err, req, res, next) => {
-  res.status(500).json({ message: 'Something wrong' });
-});
+app.use(customErrorHandler);
 
 const port = process.env.PORT || 5100;
 
