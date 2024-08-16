@@ -10,12 +10,9 @@ const JobSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    location: {
-      type: String,
-      required: true,
-    },
     link: {
       type: String,
+      default: 'N/A',
     },
     jobStatus: {
       type: String,
