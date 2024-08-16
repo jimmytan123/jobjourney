@@ -2,7 +2,8 @@ import express from 'express';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import { customErrorHandler } from './middleware/errorsMiddleware.js';
+import { StatusCodes } from 'http-status-codes';
+import { customErrorHandler } from './middleware/errorMiddleware.js';
 
 // Import routers
 import jobRouter from './routes/jobRouter.js';
@@ -25,10 +26,10 @@ app.use('/api/v1/jobs', jobRouter);
 
 // NOT FOUND Route
 app.use('*', (req, res) => {
-  res.status(404).json({ message: 'Not found' });
+  res.status(StatusCodes.NOT_FOUND).json({ message: 'Not found' });
 });
 
-// Custom Error Route
+// Custom Error Handler Route
 app.use(customErrorHandler);
 
 const port = process.env.PORT || 5100;
