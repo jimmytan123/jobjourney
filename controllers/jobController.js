@@ -14,13 +14,10 @@ export const getAllJobs = async (req, res, next) => {
 
 // CREATE JOB
 export const createJob = async (req, res, next) => {
-  const { company, position } = req.body;
+  // const { company, position } = req.body;
 
   try {
-    const job = await Job.create({
-      company,
-      position,
-    });
+    const job = await Job.create(req.body);
 
     res.status(StatusCodes.CREATED).json({ job: job });
   } catch (err) {
@@ -48,15 +45,12 @@ export const getJob = async (req, res, next) => {
 // EDIT JOB
 export const updateJob = async (req, res, next) => {
   const { id } = req.params;
-  const { company, position } = req.body;
+  // const { company, position } = req.body;
 
   try {
     const updatedJob = await Job.findByIdAndUpdate(
       id,
-      {
-        company,
-        position,
-      },
+      req.body,
       { new: true } // Then will return the job after the update was applied
     );
 
