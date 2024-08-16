@@ -1,10 +1,11 @@
 import Job from '../models/Job.js';
+import { StatusCodes } from 'http-status-codes';
 
 // GET ALL JOBS
 export const getAllJobs = async (req, res, next) => {
   try {
     const jobs = await Job.find();
-    res.status(200).json({ jobs });
+    res.status(StatusCodes.OK).json({ jobs });
   } catch (err) {
     next(err);
   }
@@ -20,7 +21,7 @@ export const createJob = async (req, res, next) => {
       position,
     });
 
-    res.status(201).json({ job: job });
+    res.status(StatusCodes.CREATED).json({ job: job });
   } catch (err) {
     next(err);
   }
@@ -35,11 +36,11 @@ export const getJob = async (req, res, next) => {
 
     if (!job) {
       const error = new Error(`No job with ${id}`);
-      error.statusCode = 404;
+      error.statusCode = StatusCodes.NOT_FOUND;
       throw error;
     }
 
-    res.status(200).json({ job });
+    res.status(StatusCodes.OK).json({ job });
   } catch (err) {
     next(err);
   }
@@ -62,11 +63,11 @@ export const updateJob = async (req, res, next) => {
 
     if (!updatedJob) {
       const error = new Error(`No job with ${id}`);
-      error.statusCode = 404;
+      error.statusCode = StatusCodes.NOT_FOUND;
       throw error;
     }
 
-    res.status(200).json({ message: 'Job Updated', updatedJob });
+    res.status(StatusCodes.OK).json({ message: 'Job Updated', updatedJob });
   } catch (err) {
     next(err);
   }
@@ -81,11 +82,11 @@ export const deleteJob = async (req, res, next) => {
 
     if (!removedJob) {
       const error = new Error(`No job with ${id}`);
-      error.statusCode = 404;
+      error.statusCode = StatusCodes.NOT_FOUND;
       throw error;
     }
 
-    res.status(200).json({ message: 'Job Deleted' });
+    res.status(StatusCodes.OK).json({ message: 'Job Deleted' });
   } catch (err) {
     next(err);
   }
