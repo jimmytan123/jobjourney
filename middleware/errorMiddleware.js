@@ -9,7 +9,7 @@ export const customErrorHandler = (err, req, res, next) => {
   // This is when mongoose failed to cast a value.
   if (err.name === 'CastError' && err.kind === 'ObjectId') {
     statusCode = StatusCodes.NOT_FOUND;
-    message = 'Resource not found.';
+    message = 'CastError. Resource not found.';
   }
 
   res.status(statusCode).json({ message });
