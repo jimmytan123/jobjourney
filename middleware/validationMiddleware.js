@@ -1,8 +1,10 @@
-import { body, validationResult } from 'express-validator';
-import { BadRequestError } from '../errors/customErrors.js';
+import { body, param, validationResult } from 'express-validator';
+import { BadRequestError, NotFoundError } from '../errors/customErrors.js';
 import { JOB_STATUS, JOB_TYPE } from '../utils/constant.js';
+import mongoose from 'mongoose';
+// import Job from '../models/Job.js';
 
-// REUSABLE validation layer
+// REUSABLE validation layer (define validation(as a param) and verify validation result)
 const withValidationErrors = (validateValues) => {
   return [
     validateValues,
@@ -16,7 +18,7 @@ const withValidationErrors = (validateValues) => {
         throw new BadRequestError(errMessages);
       }
 
-      // If no validation errors, move to the next middleware
+      // If no validation errors, move to the next middleware(to the controller logic)
       next();
     },
   ];
@@ -39,4 +41,22 @@ export const validateJobInput = withValidationErrors([
   body('jobType')
     .isIn(Object.values(JOB_TYPE))
     .withMessage('Invalid job type value'),
+]);
+
+// For ID params, checking if it is a valid mongo id type,
+// and the existence of a job if the id parm is valid (commented out by now)
+// by using custom validator function https://express-validator.github.io/docs/6.0.0/validation-chain-api#customvalidator
+export const validateIdParams = withValidationErrors([
+  param('id').custom(async (value) => {
+    const isValidMongoDBId = mongoose.Types.ObjectId.isValid(value);
+
+    if (!isValidMongoDBId) {
+      throw new Error('ID is not a valid MongoDB _id, Please Check ID');
+    }
+
+    // const job = await Job.findById(value);
+    // if (!job) {
+    //   throw new Error(`No job with ${value}`);
+    // }
+  }),
 ]);
