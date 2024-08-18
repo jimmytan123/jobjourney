@@ -6,9 +6,11 @@ import { NotFoundError } from '../errors/customErrors.js';
 // route POST /api/v1/auth/register
 // @access Public
 export const register = async (req, res, next) => {
-  const { name, lastName, email, password, location, role } = req.body;
-
   try {
+    // Logic for admin user -> the first user in the DB will ONLY be the admin role
+    const usersCount = await User.countDocuments();
+    req.body.role = usersCount === 0 ? 'admin' : 'user';
+
     const user = await User.create(req.body);
 
     res.status(StatusCodes.CREATED).json({ user });
