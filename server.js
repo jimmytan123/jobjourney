@@ -7,6 +7,7 @@ import { customErrorHandler } from './middleware/errorMiddleware.js';
 
 // Import routers
 import jobRouter from './routes/jobRouter.js';
+import authRouter from './routes/authRouter.js';
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.get('/', (req, res) => {
 
 // API routes
 app.use('/api/v1/jobs', jobRouter);
+app.use('/api/v1/auth', authRouter);
 
 // NOT FOUND Route
 app.use('*', (req, res) => {

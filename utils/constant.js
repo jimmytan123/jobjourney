@@ -11,3 +11,9 @@ export const JOB_TYPE = {
   PARTTIME: 'part-time',
   INTERNSHIP: 'internship',
 };
+
+export const USER_TYPE = {
+  USER: 'user',
+  ADMIN: 'admin',
+  default: 'user',
+};
