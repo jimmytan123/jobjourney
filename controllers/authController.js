@@ -1,11 +1,13 @@
 import User from '../models/User.js';
 import { StatusCodes } from 'http-status-codes';
-import { NotFoundError } from '../errors/customErrors.js';
-import bcrypt from 'bcryptjs';
+import { getHashedPassword } from '../utils/password.js';
 
-// @desc Register a new user
-// route POST /api/v1/auth/register
-// @access Public
+/**
+ * @desc REGISTER
+ * @method POST
+ * @path /api/v1/auth/register
+ * @access PUBLIC
+ */
 export const register = async (req, res, next) => {
   try {
     // Logic for admin user -> the first user in the DB will ONLY be the admin role
@@ -13,9 +15,8 @@ export const register = async (req, res, next) => {
     req.body.role = usersCount === 0 ? 'admin' : 'user';
 
     // Convert password into the hashed version
-    const salt = await bcrypt.genSalt(10);
     const { password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await getHashedPassword(password);
     req.body.password = hashedPassword;
 
     // Create user in DB
