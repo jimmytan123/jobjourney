@@ -1,6 +1,8 @@
 import User from '../models/User.js';
 import { StatusCodes } from 'http-status-codes';
-import { getHashedPassword } from '../utils/password.js';
+import { getHashedPassword, isPasswordMatched } from '../utils/password.js';
+import { UnauthenticatedError } from '../errors/customErrors.js';
+import { createJWT } from '../utils/token.js';
 
 /**
  * @desc REGISTER
@@ -30,6 +32,38 @@ export const register = async (req, res, next) => {
   }
 };
 
+/**
+ * @desc LOGIN
+ * @method POST
+ * @path /api/v1/auth/login
+ * @access PUBLIC
+ */
 export const login = async (req, res, next) => {
-  res.status(200).json({ message: 'User login' });
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email: email });
+
+    // Check the existence of the user and compare passwords
+    const isValidUserAndPassword =
+      user && (await isPasswordMatched(password, user.password));
+
+    if (!isValidUserAndPassword) {
+      throw new UnauthenticatedError('Invalid email or password');
+    }
+
+    // Create JWT token
+    const token = createJWT({ userId: user._id, role: user.role });
+
+    // Send back HTTP-only jwt cookie
+    res.cookie('token', token, {
+      httpOnly: true,
+      expires: new Date(Date.now() + 1000 * 60 * 60 * 24), // expires in 1 day in milleseconds from now
+      secure: process.env.NODE_ENV === 'production',
+    });
+
+    res.status(StatusCodes.OK).json({ message: 'Login successfully' });
+  } catch (err) {
+    next(err);
+  }
 };

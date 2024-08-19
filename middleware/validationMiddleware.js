@@ -85,3 +85,13 @@ export const validateRegisterUserInput = withValidationErrors([
     .withMessage('password must be at least 8 and at most 20 characters long'),
   body('location').notEmpty().withMessage('location is required'),
 ]);
+
+// For login user
+export const validateLoginUserInput = withValidationErrors([
+  body('email')
+    .notEmpty()
+    .withMessage('email is required')
+    .isEmail()
+    .withMessage('valid email format is required'),
+  body('password').notEmpty().withMessage('password is required'),
+]);
