@@ -2,7 +2,12 @@ import Job from '../models/Job.js';
 import { StatusCodes } from 'http-status-codes';
 import { NotFoundError } from '../errors/customErrors.js';
 
-// GET ALL JOBS
+/**
+ * @desc Get all jobs
+ * @method GET
+ * @path /api/v1/jobs
+ * @access PRIVATE
+ */
 export const getAllJobs = async (req, res, next) => {
   try {
     const jobs = await Job.find();
@@ -12,7 +17,12 @@ export const getAllJobs = async (req, res, next) => {
   }
 };
 
-// CREATE JOB
+/**
+ * @desc Create a job
+ * @method POST
+ * @path /api/v1/jobs
+ * @access PRIVATE
+ */
 export const createJob = async (req, res, next) => {
   // const { company, position } = req.body;
 
@@ -25,7 +35,12 @@ export const createJob = async (req, res, next) => {
   }
 };
 
-// GET SINGLE JOB
+/**
+ * @desc Get a single job
+ * @method GET
+ * @path /api/v1/jobs/:id
+ * @access PRIVATE
+ */
 export const getJob = async (req, res, next) => {
   const { id } = req.params;
 
@@ -42,7 +57,12 @@ export const getJob = async (req, res, next) => {
   }
 };
 
-// EDIT JOB
+/**
+ * @desc Update a single job
+ * @method PATCH
+ * @path /api/v1/jobs/:id
+ * @access PRIVATE
+ */
 export const updateJob = async (req, res, next) => {
   const { id } = req.params;
   // const { company, position } = req.body;
@@ -64,7 +84,12 @@ export const updateJob = async (req, res, next) => {
   }
 };
 
-// DELETE JOB
+/**
+ * @desc Delete a single job
+ * @method DELETE
+ * @path /api/v1/jobs/:id
+ * @access PRIVATE
+ */
 export const deleteJob = async (req, res, next) => {
   const { id } = req.params;
 

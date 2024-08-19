@@ -29,6 +29,7 @@ const JobSchema = new mongoose.Schema(
       type: String,
       default: 'my current city',
     },
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Connect job to the user who created it
   },
   { timestamps: true }
 );
