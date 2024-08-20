@@ -1,6 +1,6 @@
 import Job from '../models/Job.js';
 import { StatusCodes } from 'http-status-codes';
-import { NotFoundError } from '../errors/customErrors.js';
+import { NotFoundError, UnauthorizedError } from '../errors/customErrors.js';
 
 /**
  * @desc Get all jobs
@@ -10,7 +10,8 @@ import { NotFoundError } from '../errors/customErrors.js';
  */
 export const getAllJobs = async (req, res, next) => {
   try {
-    const jobs = await Job.find();
+    const userId = req.user.userId;
+    const jobs = await Job.find({ createdBy: userId });
     res.status(StatusCodes.OK).json({ jobs });
   } catch (err) {
     next(err);
@@ -24,9 +25,10 @@ export const getAllJobs = async (req, res, next) => {
  * @access PRIVATE
  */
 export const createJob = async (req, res, next) => {
-  // const { company, position } = req.body;
-
   try {
+    // Add createdBy field from req user obj to the req body obj
+    req.body.createdBy = req.user.userId;
+
     const job = await Job.create(req.body);
 
     res.status(StatusCodes.CREATED).json({ job: job });

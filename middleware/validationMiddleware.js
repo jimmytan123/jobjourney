@@ -1,9 +1,14 @@
 import { body, param, validationResult } from 'express-validator';
-import { BadRequestError, NotFoundError } from '../errors/customErrors.js';
+import {
+  BadRequestError,
+  NotFoundError,
+  UnauthorizedError,
+} from '../errors/customErrors.js';
 import { JOB_STATUS, JOB_TYPE } from '../utils/constant.js';
 import mongoose from 'mongoose';
-// import Job from '../models/Job.js';
+import Job from '../models/Job.js';
 import User from '../models/User.js';
+import { isAllowToRequest } from '../utils/job.js';
 
 // REUSABLE validation layer (define validation(as a param) and verify validation result)
 const withValidationErrors = (validateValues) => {
@@ -16,6 +21,16 @@ const withValidationErrors = (validateValues) => {
       // Handle errors and send back bad request responses with error messages
       if (!errors.isEmpty()) {
         const errMessages = errors.array().map((error) => error.msg);
+
+        // Custom error messages and types
+        if (errMessages[0].startsWith('no job')) {
+          throw new NotFoundError(errMessages);
+        }
+        if (errMessages[0].startsWith('not authorized')) {
+          throw new UnauthorizedError(errMessages);
+        }
+
+        // Default/fallback error
         throw new BadRequestError(errMessages);
       }
 
@@ -45,20 +60,26 @@ export const validateJobInput = withValidationErrors([
 ]);
 
 // For ID params, checking if it is a valid mongo id type,
-// and the existence of a job if the id parm is valid (commented out by now)
+// and the existence of a job given the id,
+// and if the people who access the resource is an admin or the creator
 // by using custom validator function https://express-validator.github.io/docs/6.0.0/validation-chain-api#customvalidator
 export const validateIdParams = withValidationErrors([
-  param('id').custom(async (value) => {
+  param('id').custom(async (value, { req }) => {
     const isValidMongoDBId = mongoose.Types.ObjectId.isValid(value);
 
     if (!isValidMongoDBId) {
       throw new Error('ID is not a valid MongoDB _id, please Check ID');
     }
 
-    // const job = await Job.findById(value);
-    // if (!job) {
-    //   throw new Error(`No job with ${value}`);
-    // }
+    const job = await Job.findById(value);
+    if (!job) {
+      throw new Error(`no job with ${value}`);
+    }
+
+    const isAllowed = isAllowToRequest(job, req.user);
+    if (!isAllowed) {
+      throw new UnauthorizedError('not authorized to access this resource');
+    }
   }),
 ]);
 
