@@ -1,4 +1,8 @@
-import { UnauthenticatedError } from '../errors/customErrors.js';
+import {
+  UnauthenticatedError,
+  UnauthorizedError,
+} from '../errors/customErrors.js';
+import { USER_TYPE } from '../utils/constant.js';
 import { verifyJWT } from '../utils/token.js';
 
 export const authenticateUser = (req, res, next) => {
@@ -25,4 +29,17 @@ export const authenticateUser = (req, res, next) => {
     // To catch something wrong when verifying the JWT
     next(new UnauthenticatedError('authentication invalid'));
   }
+};
+
+// Accept a number of roles, return the middleware function
+export const authorizePermissions = (...roles) => {
+  return (req, res, next) => {
+    // console.log(roles); // ['admin'];
+
+    if (!roles.includes(req.user.role)) {
+      throw new UnauthorizedError('user not authorized to this route');
+    }
+
+    next();
+  };
 };

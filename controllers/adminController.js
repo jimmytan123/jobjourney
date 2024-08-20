@@ -3,11 +3,18 @@ import Job from '../models/Job.js';
 import { StatusCodes } from 'http-status-codes';
 
 /**
- * @desc Get app stats
+ * @desc Get app stats, only admin can access
  * @method GET
  * @path /api/v1/admin/app-stats
  * @access Private
  */
 export const getStats = async (req, res, next) => {
-  res.status(StatusCodes.OK).json({ message: 'Get app stats' });
+  try {
+    const usersCount = await User.countDocuments();
+    const jobsCount = await Job.countDocuments();
+
+    res.status(StatusCodes.OK).json({ usersCount, jobsCount });
+  } catch (err) {
+    next(err);
+  }
 };
