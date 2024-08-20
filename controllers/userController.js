@@ -1,6 +1,7 @@
 import User from '../models/User.js';
 import Job from '../models/Job.js';
 import { StatusCodes } from 'http-status-codes';
+import { NotFoundError } from '../errors/customErrors.js';
 
 /**
  * @desc Get user profile
@@ -28,5 +29,17 @@ export const getUserProfile = async (req, res, next) => {
  * @access Private
  */
 export const updateUser = async (req, res, next) => {
-  res.status(StatusCodes.CREATED).json({ message: 'Update user' });
+  try {
+    const user = await User.findByIdAndUpdate(req.user.userId, req.body);
+
+    if (!user) {
+      throw new NotFoundError('user not found');
+    }
+
+    res
+      .status(StatusCodes.CREATED)
+      .json({ message: 'user updated successfully' });
+  } catch (err) {
+    next(err);
+  }
 };

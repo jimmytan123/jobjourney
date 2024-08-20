@@ -116,3 +116,25 @@ export const validateLoginUserInput = withValidationErrors([
     .withMessage('valid email format is required'),
   body('password').notEmpty().withMessage('password is required'),
 ]);
+
+// For update user info
+export const validateUpdateUserInput = withValidationErrors([
+  body('name').notEmpty().withMessage('name is required'),
+  body('lastName').notEmpty().withMessage('last name is required'),
+  body('email')
+    .notEmpty()
+    .withMessage('email is required')
+    .isEmail()
+    .withMessage('valid email format is required')
+    .custom(async (value, { req }) => {
+      const user = await User.findOne({ email: value });
+
+      // Check if there is another existing user with the email we want to update in the DB
+      if (user && user._id.toString() !== req.user.userId) {
+        throw new Error('email already exists');
+      }
+    }),
+  body('location').notEmpty().withMessage('location is required'),
+  body('role').not().exists().withMessage('cannot update user role'), // Prevent updating the role
+  body('password').not().exists().withMessage('cannot update password here'), // Prevent updating the pw here
+]);
