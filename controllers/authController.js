@@ -67,3 +67,19 @@ export const login = async (req, res, next) => {
     next(err);
   }
 };
+
+/**
+ * @desc LOGOUT
+ * @method GET
+ * @path /api/v1/auth/logout
+ * @access PUBLIC
+ */
+export const logout = (req, res, next) => {
+  // Destroy token cookie, expires immediately
+  res.cookie('token', '', {
+    httpOnly: true,
+    expires: new Date(Date.now()),
+  });
+
+  res.status(StatusCodes.OK).json({ message: 'Logout successfully' });
+};
