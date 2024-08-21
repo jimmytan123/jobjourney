@@ -295,6 +295,8 @@ button:disabled {
   background-color: var(--red-light);
   border-radius: var(--border-radius);
   margin-bottom: 1rem;
+  font-size: var(--small-text);
+  text-align: left;
 }
 
 ::placeholder {

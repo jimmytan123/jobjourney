@@ -14,6 +14,7 @@ import {
 } from './pages';
 import { checkAndSetDefaultTheme } from './utils/checkTheme';
 import { registerAction } from './pages/Register';
+import { loginAction } from './pages/Login';
 
 // Check UI theme settings when initialize the App, and set theme
 checkAndSetDefaultTheme();
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
       {
         path: 'login',
         element: <Login />,
+        action: loginAction,
       },
       {
         path: 'dashboard',

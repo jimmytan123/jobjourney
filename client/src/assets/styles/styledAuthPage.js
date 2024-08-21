@@ -38,6 +38,10 @@ const Wrapper = styled.div`
     color: var(--primary-500);
     margin-left: 0.4rem;
   }
+
+  p.form-input-error {
+    text-align: left;
+  }
 `;
 
 export default Wrapper;

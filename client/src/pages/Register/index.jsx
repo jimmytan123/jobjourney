@@ -34,7 +34,8 @@ export async function registerAction({ request }) {
     inputErrors.email = 'Valid email is required';
   if (!location) inputErrors.location = 'Location is required';
   if (!password || password.length < 8 || password.length > 20)
-    inputErrors.password = 'Password must be at least 8 characters and max 20';
+    inputErrors.password =
+      'Password must be at least 8 and at most 20 characters';
   if (password !== confirmPassword)
     inputErrors.confirmPassword = 'Passwords do not match';
 

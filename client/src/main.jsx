@@ -8,6 +8,6 @@ import './index.css';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />
-    <ToastContainer position="top-right" />
+    <ToastContainer position="top-right" newestOnTop />
   </StrictMode>
 );
