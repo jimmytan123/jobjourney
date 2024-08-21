@@ -41,6 +41,7 @@ html {
   --black: #222;
   --white: #fff;
   --red-light: #f2d7cc;
+  --red: #de3163;
   --red-dark: #661b26;
   --green-light: #d7fcef;
   --green-dark: #075239;
@@ -286,6 +287,14 @@ button:disabled {
 
 .form-textarea {
   height: 7rem;
+}
+
+.form-input-error {
+  color: var(--red);
+  padding: 0.2rem 0.5rem;
+  background-color: var(--red-light);
+  border-radius: var(--border-radius);
+  margin-bottom: 1rem;
 }
 
 ::placeholder {

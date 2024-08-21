@@ -22,6 +22,7 @@ const Error = () => {
   return (
     <StyledWrapper>
       <div>
+        <img src={ErrorImg} alt="Error" />
         <h3>Something Went Wrong</h3>
         <p>Please try again later.</p>
       </div>

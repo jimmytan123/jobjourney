@@ -13,6 +13,7 @@ import {
   Admin,
 } from './pages';
 import { checkAndSetDefaultTheme } from './utils/checkTheme';
+import { registerAction } from './pages/Register';
 
 // Check UI theme settings when initialize the App, and set theme
 checkAndSetDefaultTheme();
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
       {
         path: 'register',
         element: <Register />,
+        action: registerAction, // Associate action with this route
       },
       {
         path: 'login',

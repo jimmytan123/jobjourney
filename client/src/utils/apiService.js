@@ -8,6 +8,6 @@ const config = {
   },
 };
 
-const apiFetch = axios.create(config);
+const baseFetch = axios.create(config);
 
-export default apiFetch;
+export default baseFetch;
