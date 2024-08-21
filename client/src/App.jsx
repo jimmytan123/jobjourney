@@ -15,6 +15,7 @@ import {
 import { checkAndSetDefaultTheme } from './utils/checkTheme';
 import { registerAction } from './pages/Register';
 import { loginAction } from './pages/Login';
+import { loader as dashboardLoader } from './pages/DashboardLayout';
 
 // Check UI theme settings when initialize the App, and set theme
 checkAndSetDefaultTheme();
@@ -42,6 +43,7 @@ const router = createBrowserRouter([
       {
         path: 'dashboard',
         element: <DashboardLayout />, // Layout for dashboard(nav, side nav, content)
+        loader: dashboardLoader,
         children: [
           {
             index: true,

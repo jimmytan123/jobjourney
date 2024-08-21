@@ -1,18 +1,40 @@
 import { createContext, useContext, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, redirect, useLoaderData } from 'react-router-dom';
 import SmallSidebar from '../../components/SmallSidebar';
 import LargeSidebar from '../../components/LargeSidebar';
 import Navbar from '../../components/Navbar';
 import { Wrapper } from './styled';
 import { checkAndSetDefaultTheme } from '../../utils/checkTheme';
+import baseFetch from '../../utils/apiService';
+
+// Loader for route (React router)
+export const loader = async () => {
+  try {
+    // Make API request to get current user info
+    const { data } = await baseFetch.get('/users/current');
+
+    return data;
+  } catch (err) {
+    console.log(err);
+
+    // Redirect to login page
+    if (err.response.status === 401) {
+      return redirect('/login');
+    }
+
+    return err;
+  }
+};
 
 // Create a React Context for dashboard items
 const DashboardContext = createContext();
 
 // Layout component for nav, sidebar, body content and shared states
 const DashboardLayout = () => {
-  // Mock User Data
-  const user = { name: 'John' };
+  // Access the loader data, data was fetched to the route element before it renders
+  const data = useLoaderData();
+  const user = data.user;
+
   const [showSidebar, setShowSidebar] = useState(false);
   const [isDarkTheme, setIsDarkTheme] = useState(checkAndSetDefaultTheme());
 
