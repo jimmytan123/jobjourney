@@ -281,6 +281,10 @@ button:disabled {
   height: 35px;
 }
 
+.form-select {
+  text-transform: capitalize;
+}
+
 .form-row {
   margin-bottom: 1rem;
 }
@@ -297,6 +301,7 @@ button:disabled {
   margin-bottom: 1rem;
   font-size: var(--small-text);
   text-align: left;
+  line-height: 1.4;
 }
 
 ::placeholder {

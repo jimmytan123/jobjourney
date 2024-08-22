@@ -39,6 +39,7 @@ const Wrapper = styled.nav`
   justify-content: center;
   align-items: center;
   background-color: var(--background-secondary-color);
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.1);
 
   .nav-center {
     display: flex;

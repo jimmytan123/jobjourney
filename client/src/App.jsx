@@ -16,6 +16,7 @@ import { checkAndSetDefaultTheme } from './utils/checkTheme';
 import { registerAction } from './pages/Register';
 import { loginAction } from './pages/Login';
 import { loader as dashboardLoader } from './pages/DashboardLayout';
+import { action as addJobAction } from './pages/AddJob';
 
 // Check UI theme settings when initialize the App, and set theme
 checkAndSetDefaultTheme();
@@ -48,6 +49,7 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <AddJob />,
+            action: addJobAction,
           },
           {
             path: 'jobs',

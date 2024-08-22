@@ -87,6 +87,10 @@ const Wrapper = styled.div`
     color: var(--primary-500);
   }
 
+  .pending {
+    background-color: var(--background-color);
+  }
+
   @media (min-width: 1024px) {
     display: block;
     box-shadow: 1px 0 0 0 rgba(0, 0, 0, 0.1);
