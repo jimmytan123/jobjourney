@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from 'react';
-import { Outlet, redirect, useLoaderData } from 'react-router-dom';
+import { Outlet, redirect, useLoaderData, useNavigate } from 'react-router-dom';
 import SmallSidebar from '../../components/SmallSidebar';
 import LargeSidebar from '../../components/LargeSidebar';
 import Navbar from '../../components/Navbar';
@@ -35,6 +35,8 @@ const DashboardLayout = () => {
   const data = useLoaderData();
   const user = data.user;
 
+  const navigate = useNavigate();
+
   const [showSidebar, setShowSidebar] = useState(false);
   const [isDarkTheme, setIsDarkTheme] = useState(checkAndSetDefaultTheme());
 
@@ -54,8 +56,15 @@ const DashboardLayout = () => {
     setShowSidebar((showSidebar) => !showSidebar);
   };
 
-  const logoutUser = () => {
-    console.log('logout');
+  const logoutUser = async () => {
+    try {
+      // Make api request to destroy jwt cookie
+      await baseFetch.get('/auth/logout');
+
+      navigate('/login');
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
