@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'; //https://reactrouter.com/en/main/co
 import { useDashboardContext } from '../pages/DashboardLayout';
 
 const NavLinks = ({ disableToggleSidebar }) => {
-  const { toggleSidebar } = useDashboardContext();
+  const { toggleSidebar, user } = useDashboardContext();
 
   const handleLinkClick = (e) => {
     e.stopPropagation(); // disable parent events(sidebar-container)
@@ -13,6 +13,9 @@ const NavLinks = ({ disableToggleSidebar }) => {
   return (
     <div className="nav-links">
       {links.map((link) => {
+        // Hide admin link if user does not have permission
+        if (link.path === 'admin' && user.role !== 'admin') return;
+
         return (
           <NavLink
             to={link.path}

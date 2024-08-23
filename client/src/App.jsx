@@ -22,6 +22,7 @@ import { loader as allJobsLoader } from './pages/AllJobs';
 import { loader as editJobLoader } from './pages/EditJob';
 import { action as editAction } from './pages/EditJob';
 import { action as deleteAction } from './pages/DeleteJob';
+import { loader as adminLoader } from './pages/Admin';
 
 // Check UI theme settings when initialize the App, and set theme
 checkAndSetDefaultTheme();
@@ -82,6 +83,7 @@ const router = createBrowserRouter([
           {
             path: 'admin',
             element: <Admin />,
+            loader: adminLoader,
           },
         ],
       },
