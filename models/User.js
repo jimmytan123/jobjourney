@@ -29,6 +29,8 @@ const UserSchema = new mongoose.Schema(
       enum: Object.values(USER_TYPE), // ['user', 'admin']
       default: USER_TYPE.USER,
     },
+    avatar: String,
+    avatarPublicId: String,
     // jobs: [{ type: Schema.Types.ObjectId, ref: 'Job' }],
   },
   { timestamps: true }

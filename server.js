@@ -15,13 +15,26 @@ import authRouter from './routes/authRouter.js';
 import userRouter from './routes/userRouter.js';
 import adminRouter from './routes/adminRouter.js';
 
+// Public
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+import path from 'path';
+
 const app = express();
 
 /* CONFIGS */
 dotenv.config();
+
+// Logger configs
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev')); //HTTP request logger middleware
 }
+
+// Static folder configs (public folder)
+const __dirname = dirname(fileURLToPath(import.meta.url));
+app.use(express.static(path.resolve(__dirname, './public')));
+
+// Parser configs
 app.use(express.json());
 app.use(cookieParser());
 
