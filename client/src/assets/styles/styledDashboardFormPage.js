@@ -36,13 +36,16 @@ export const Wrapper = styled.div`
     margin-top: 1rem;
   }
 
+  .form-input-error {
+    margin-top: 0.5rem;
+  }
+
   @media (min-width: 1024px) {
     padding: 4rem 3.6rem;
 
     .form-center {
       grid-template-columns: 1fr 1fr;
       column-gap: 2rem;
-      align-items: center;
     }
 
     .form-btn {

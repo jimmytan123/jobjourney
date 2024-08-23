@@ -1,4 +1,3 @@
-import React from 'react';
 import { FaSuitcase } from 'react-icons/fa';
 import { FaUser } from 'react-icons/fa';
 import { MdAdminPanelSettings } from 'react-icons/md';
@@ -13,7 +12,7 @@ const links = [
     icon: <FaFileWaveform />,
   },
   {
-    text: 'all job',
+    text: 'all jobs',
     path: 'jobs',
     icon: <FaSuitcase />,
   },

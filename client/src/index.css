@@ -45,6 +45,7 @@ html {
   --red-dark: #661b26;
   --green-light: #d7fcef;
   --green-dark: #075239;
+  --cyan-dark: #008b8b;
 
   --small-text: 0.85rem;
   --extra-small-text: 0.75rem;
@@ -350,17 +351,17 @@ button:disabled {
   margin: 0 auto;
 }
 
-/* BUTTONS AND BADGES */
+/* BUTTONS AND BADGES - Based on Job Status */
 .pending {
   background: #fef3c7;
-  color: #f59e0b;
+  color: #ff9620;
 }
 
 .interview {
   background: #e0e8f9;
-  color: #647acb;
+  color: var(--cyan-dark);
 }
 .declined {
   background: #ffeeee;
-  color: #d66a6a;
+  color: #800080;
 }

@@ -50,23 +50,32 @@ const AddJob = () => {
       <Form method="post" className="dashboard-form">
         <h4 className="form-title">Add job</h4>
         <div className="form-center">
-          <FormRow type="text" name="position" />
-          {errors?.position && (
-            <p className="form-input-error">{errors.position}</p>
-          )}
-          <FormRow type="text" name="company" />
-          {errors?.company && (
-            <p className="form-input-error">{errors.company}</p>
-          )}
-          <FormRow
-            type="text"
-            name="jobLocation"
-            defaultValue={user.location}
-            labelText="Job location"
-          />
-          {errors?.jobLocation && (
-            <p className="form-input-error">{errors.jobLocation}</p>
-          )}
+          <div>
+            <FormRow type="text" name="position" />
+            {errors?.position && (
+              <p className="form-input-error">{errors.position}</p>
+            )}
+          </div>
+
+          <div>
+            <FormRow type="text" name="company" />
+            {errors?.company && (
+              <p className="form-input-error">{errors.company}</p>
+            )}
+          </div>
+
+          <div>
+            <FormRow
+              type="text"
+              name="jobLocation"
+              defaultValue={user.location}
+              labelText="Job location"
+            />
+            {errors?.jobLocation && (
+              <p className="form-input-error">{errors.jobLocation}</p>
+            )}
+          </div>
+
           <FormRow type="text" name="link" labelText="Link(optional)" />
           <FormRowSelect
             name="jobStatus"

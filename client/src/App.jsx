@@ -17,6 +17,7 @@ import { registerAction } from './pages/Register';
 import { loginAction } from './pages/Login';
 import { loader as dashboardLoader } from './pages/DashboardLayout';
 import { action as addJobAction } from './pages/AddJob';
+import { loader as allJobsLoader } from './pages/AllJobs';
 
 // Check UI theme settings when initialize the App, and set theme
 checkAndSetDefaultTheme();
@@ -54,6 +55,7 @@ const router = createBrowserRouter([
           {
             path: 'jobs',
             element: <AllJobs />,
+            loader: allJobsLoader,
           },
           {
             path: 'stats',
