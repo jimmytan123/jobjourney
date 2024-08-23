@@ -73,7 +73,7 @@ export const validateIdParams = withValidationErrors([
 
     const job = await Job.findById(value);
     if (!job) {
-      throw new Error(`no job with ${value}`);
+      throw new Error(`no job with id ${value}`);
     }
 
     const isAllowed = isAllowToRequest(job, req.user);

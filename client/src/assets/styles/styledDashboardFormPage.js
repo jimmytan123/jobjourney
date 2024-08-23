@@ -8,9 +8,19 @@ export const Wrapper = styled.div`
   padding: 2rem 1.8rem;
   border-radius: var(--border-radius);
 
+  .back-btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 1rem;
+    font-size: 1.3rem;
+    color: var(--text-color);
+  }
+
   .form-title {
     margin-bottom: 1rem;
     font-weight: 700;
+    display: flex;
   }
 
   .dashboard-form {

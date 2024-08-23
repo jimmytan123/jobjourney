@@ -1,15 +1,35 @@
-import { useDashboardContext } from '../DashboardLayout';
-import { Wrapper } from '../../assets/styles/styledDashboardFormPage';
+import {
+  Form,
+  useLoaderData,
+  useNavigation,
+  redirect,
+  useActionData,
+  Link,
+} from 'react-router-dom';
 import baseFetch from '../../utils/apiService';
 import { toast } from 'react-toastify';
-import { Form, useNavigation, redirect, useActionData, Link } from 'react-router-dom';
 import FormRow from '../../components/FormRow';
 import FormRowSelect from '../../components/FormRowSelect';
+import { Wrapper } from '../../assets/styles/styledDashboardFormPage';
 import { JOB_STATUS, JOB_TYPE } from '../../utils/constant';
 import { FaChevronLeft } from 'react-icons/fa6';
 
-export const action = async ({ request }) => {
-  // Retrieve form data
+export const loader = async ({ params }) => {
+  const id = params.jobId; // Retrieve URL Params
+
+  try {
+    const { data } = await baseFetch.get(`/jobs/${id}`);
+
+    return data;
+  } catch (err) {
+    toast.error(err?.response?.data?.message);
+
+    return redirect('/dashboard/jobs');
+  }
+};
+
+export const action = async ({ request, params }) => {
+  // Retrieve submitted form data
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
 
@@ -28,79 +48,84 @@ export const action = async ({ request }) => {
   }
 
   try {
-    await baseFetch.post('/jobs', data);
+    await baseFetch.patch(`/jobs/${params.jobId}`, data);
 
-    toast.success('Job added');
+    toast.success('Job updated');
 
     return redirect('/dashboard/jobs');
   } catch (err) {
     // console.log(err);
-    toast.error('Error in adding job');
+    toast.error('Error in updating job');
     return err;
   }
 };
 
-const AddJob = () => {
-  const { user } = useDashboardContext();
+const EditJob = () => {
+  // Retrieve job data to prefill the form values
+  const { job } = useLoaderData();
+
   const navigation = useNavigation();
 
-  const errors = useActionData(); // To retrieve data coming back from action
+  const errors = useActionData();
 
   return (
     <Wrapper>
-      <Form method="post" className="dashboard-form">
+      <Form method="patch" className="dashboard-form">
         <h4 className="form-title">
           <Link to="/dashboard/jobs" className="back-btn">
             <FaChevronLeft />
           </Link>
-          Add job
+          Edit job
         </h4>
         <div className="form-center">
           <div>
-            <FormRow type="text" name="position" />
+            <FormRow type="text" name="position" defaultValue={job.position} />
             {errors?.position && (
               <p className="form-input-error">{errors.position}</p>
             )}
           </div>
 
           <div>
-            <FormRow type="text" name="company" />
+            <FormRow type="text" name="company" defaultValue={job.company} />
             {errors?.company && (
               <p className="form-input-error">{errors.company}</p>
             )}
           </div>
-
           <div>
             <FormRow
               type="text"
               name="jobLocation"
-              defaultValue={user.location}
+              defaultValue={job.jobLocation}
               labelText="Job location"
             />
             {errors?.jobLocation && (
               <p className="form-input-error">{errors.jobLocation}</p>
             )}
           </div>
-
-          <FormRow type="text" name="link" labelText="Link(optional)" />
+          <FormRow
+            type="text"
+            name="link"
+            labelText="Link(optional)"
+            defaultValue={job.link}
+          />
           <FormRowSelect
             name="jobStatus"
             labelText="Job status"
             options={Object.values(JOB_STATUS)}
-            defaultValue={JOB_STATUS.PENDING}
+            defaultValue={job.jobStatus}
           />
           <FormRowSelect
             name="jobType"
             labelText="Job type"
             options={Object.values(JOB_TYPE)}
-            defaultValue={JOB_TYPE.FULLTIME}
+            defaultValue={job.jobType}
           />
           <button
             type="submit"
             className="btn btn-block form-btn"
             disabled={navigation.state === 'submitting'}
           >
-            {navigation.state === 'submitting' ? 'Submitting' : 'Add'}
+            {navigation.state === 'submitting' ? 'Submitting' : 'Update'}
           </button>
         </div>
       </Form>
@@ -108,4 +133,4 @@ const AddJob = () => {
   );
 };
 
-export default AddJob;
+export default EditJob;

@@ -8,6 +8,7 @@ import {
   Error,
   AddJob,
   AllJobs,
+  EditJob,
   Stats,
   Profile,
   Admin,
@@ -18,6 +19,8 @@ import { loginAction } from './pages/Login';
 import { loader as dashboardLoader } from './pages/DashboardLayout';
 import { action as addJobAction } from './pages/AddJob';
 import { loader as allJobsLoader } from './pages/AllJobs';
+import { loader as editJobLoader } from './pages/EditJob';
+import { action as editAction } from './pages/EditJob';
 
 // Check UI theme settings when initialize the App, and set theme
 checkAndSetDefaultTheme();
@@ -56,6 +59,12 @@ const router = createBrowserRouter([
             path: 'jobs',
             element: <AllJobs />,
             loader: allJobsLoader,
+          },
+          {
+            path: 'edit-job/:jobId',
+            element: <EditJob />,
+            loader: editJobLoader,
+            action: editAction,
           },
           {
             path: 'stats',
