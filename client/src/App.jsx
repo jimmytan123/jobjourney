@@ -21,6 +21,7 @@ import { action as addJobAction } from './pages/AddJob';
 import { loader as allJobsLoader } from './pages/AllJobs';
 import { loader as editJobLoader } from './pages/EditJob';
 import { action as editAction } from './pages/EditJob';
+import { action as deleteAction } from './pages/DeleteJob';
 
 // Check UI theme settings when initialize the App, and set theme
 checkAndSetDefaultTheme();
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
             element: <EditJob />,
             loader: editJobLoader,
             action: editAction,
+          },
+          {
+            path: 'delete-job/:jobId',
+            action: deleteAction, //https://reactrouter.com/en/main/start/tutorial#deleting-records
           },
           {
             path: 'stats',
