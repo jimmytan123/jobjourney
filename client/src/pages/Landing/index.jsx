@@ -24,7 +24,7 @@ const Landing = () => {
             Register
           </Link>
           <Link to="/login" className="btn">
-            Login
+            Login / Demo User
           </Link>
         </div>
         <img src={landingImg} alt="job posting" className="img main-img" />

@@ -1,4 +1,10 @@
-import { Link, Form, redirect, useActionData } from 'react-router-dom';
+import {
+  Link,
+  Form,
+  redirect,
+  useActionData,
+  useNavigate,
+} from 'react-router-dom';
 import Logo from '../../components/Logo';
 import FormRow from '../../components/FormRow';
 import Wrapper from '../../assets/styles/styledAuthPage';
@@ -41,6 +47,24 @@ export const loginAction = async ({ request }) => {
 const Login = () => {
   const errors = useActionData(); // To retrieve data coming back from action
 
+  const navigate = useNavigate();
+
+  const loginTestUser = async () => {
+    const testUserCredentials = {
+      email: 'test@email.com',
+      password: 'testtest',
+    };
+
+    try {
+      await baseFetch.post('/auth/login', testUserCredentials);
+      toast.success('Logged in as a test user');
+      return navigate('/dashboard');
+    } catch (err) {
+      toast.error(err?.response?.data?.message);
+      return err;
+    }
+  };
+
   return (
     <Wrapper>
       <Form method="post" className="form">
@@ -53,6 +77,9 @@ const Login = () => {
           <p className="form-input-error">{errors.password}</p>
         )}
         <SubmitButton text="Login" />
+        <button type="button" className="btn btn-block btn-demo" onClick={loginTestUser}>
+          Explore as a test user
+        </button>
         <p>
           Not an user yet?
           <Link to="/register" className="login-link">

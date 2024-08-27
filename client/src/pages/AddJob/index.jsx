@@ -36,7 +36,7 @@ export const action = async ({ request }) => {
     return redirect('/dashboard/jobs');
   } catch (err) {
     // console.log(err);
-    toast.error('Error in adding job');
+    toast.error(err?.response?.data?.message);
     return err;
   }
 };

@@ -1,6 +1,7 @@
 import {
   UnauthenticatedError,
   UnauthorizedError,
+  BadRequestError,
 } from '../errors/customErrors.js';
 import { USER_TYPE } from '../utils/constant.js';
 import { verifyJWT } from '../utils/token.js';
@@ -17,10 +18,13 @@ export const authenticateUser = (req, res, next) => {
     // Verify JWT to get the data
     const decodedToken = verifyJWT(token);
 
+    const isTestUser = decodedToken.userId === '66ce1027dab3e724c81d9986';
+
     // Store an user object in the request object
     req.user = {
       userId: decodedToken.userId,
       role: decodedToken.role,
+      isTestUser: isTestUser,
     };
 
     // Move forward
@@ -42,4 +46,14 @@ export const authorizePermissions = (...roles) => {
 
     next();
   };
+};
+
+// Check for test user, only have read access
+export const checkForTestUser = (req, res, next) => {
+  if (req.user.isTestUser) {
+    throw new BadRequestError('Test user - only have read access');
+  }
+
+  // Other users can move forward
+  next();
 };

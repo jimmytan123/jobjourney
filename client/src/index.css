@@ -210,6 +210,10 @@ ul {
   background: var(--primary-700);
 }
 
+.btn-demo {
+  background: var(--primary-400);
+}
+
 .btn-block {
   width: 100%;
 }
