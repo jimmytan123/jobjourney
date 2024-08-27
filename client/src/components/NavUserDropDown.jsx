@@ -38,7 +38,11 @@ const NavUserDropDown = () => {
           className="btn"
           onClick={() => setIsOpen(!isOpen)}
         >
-          <FaCircleUser />
+          {user.avatar ? (
+            <img src={user.avatar} alt="avatar" className="img" />
+          ) : (
+            <FaCircleUser />
+          )}
           {user?.name}
           <FaCaretDown className={isOpen ? 'rotateUp' : ''} />
         </button>
@@ -124,6 +128,6 @@ const Wrapper = styled.div`
   }
 
   .rotateUp {
-    transform: rotate(180deg)
+    transform: rotate(180deg);
   }
 `;

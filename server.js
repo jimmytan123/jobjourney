@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import { StatusCodes } from 'http-status-codes';
+import { v2 as cloudinary } from 'cloudinary';
 
 // Import middlewares
 import { authenticateUser } from './middleware/authMiddleware.js';
@@ -37,6 +38,13 @@ app.use(express.static(path.resolve(__dirname, './public')));
 // Parser configs
 app.use(express.json());
 app.use(cookieParser());
+
+// Cloudinary configs
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 app.get('/', (req, res) => {
   res.send('Server is running');
