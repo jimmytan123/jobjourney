@@ -1,7 +1,6 @@
 import {
   Form,
   useLoaderData,
-  useNavigation,
   redirect,
   useActionData,
   Link,
@@ -13,6 +12,7 @@ import FormRowSelect from '../../components/FormRowSelect';
 import { Wrapper } from '../../assets/styles/styledDashboardFormPage';
 import { JOB_STATUS, JOB_TYPE } from '../../utils/constant';
 import { FaChevronLeft } from 'react-icons/fa6';
+import SubmitButton from '../../components/SubmitButton';
 
 export const loader = async ({ params }) => {
   const id = params.jobId; // Retrieve URL Params
@@ -63,8 +63,6 @@ export const action = async ({ request, params }) => {
 const EditJob = () => {
   // Retrieve job data to prefill the form values
   const { job } = useLoaderData();
-
-  const navigation = useNavigation();
 
   const errors = useActionData();
 
@@ -120,13 +118,7 @@ const EditJob = () => {
             options={Object.values(JOB_TYPE)}
             defaultValue={job.jobType}
           />
-          <button
-            type="submit"
-            className="btn btn-block form-btn"
-            disabled={navigation.state === 'submitting'}
-          >
-            {navigation.state === 'submitting' ? 'Submitting' : 'Update'}
-          </button>
+          <SubmitButton formBtn text="Update" />
         </div>
       </Form>
     </Wrapper>

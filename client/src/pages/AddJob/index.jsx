@@ -2,11 +2,12 @@ import { useDashboardContext } from '../DashboardLayout';
 import { Wrapper } from '../../assets/styles/styledDashboardFormPage';
 import baseFetch from '../../utils/apiService';
 import { toast } from 'react-toastify';
-import { Form, useNavigation, redirect, useActionData, Link } from 'react-router-dom';
+import { Form, redirect, useActionData, Link } from 'react-router-dom';
 import FormRow from '../../components/FormRow';
 import FormRowSelect from '../../components/FormRowSelect';
 import { JOB_STATUS, JOB_TYPE } from '../../utils/constant';
 import { FaChevronLeft } from 'react-icons/fa6';
+import SubmitButton from '../../components/SubmitButton';
 
 export const action = async ({ request }) => {
   // Retrieve form data
@@ -42,7 +43,6 @@ export const action = async ({ request }) => {
 
 const AddJob = () => {
   const { user } = useDashboardContext();
-  const navigation = useNavigation();
 
   const errors = useActionData(); // To retrieve data coming back from action
 
@@ -95,13 +95,7 @@ const AddJob = () => {
             options={Object.values(JOB_TYPE)}
             defaultValue={JOB_TYPE.FULLTIME}
           />
-          <button
-            type="submit"
-            className="btn btn-block form-btn"
-            disabled={navigation.state === 'submitting'}
-          >
-            {navigation.state === 'submitting' ? 'Submitting' : 'Add'}
-          </button>
+          <SubmitButton formBtn text="Add" />
         </div>
       </Form>
     </Wrapper>

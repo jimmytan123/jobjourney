@@ -1,15 +1,10 @@
-import {
-  Link,
-  Form,
-  redirect,
-  useNavigation,
-  useActionData,
-} from 'react-router-dom';
+import { Link, Form, redirect, useActionData } from 'react-router-dom';
 import Logo from '../../components/Logo';
 import FormRow from '../../components/FormRow';
 import Wrapper from '../../assets/styles/styledAuthPage';
 import baseFetch from '../../utils/apiService';
 import { toast } from 'react-toastify';
+import SubmitButton from '../../components/SubmitButton';
 
 export const loginAction = async ({ request }) => {
   // Retrieve form data
@@ -44,7 +39,6 @@ export const loginAction = async ({ request }) => {
 };
 
 const Login = () => {
-  const navigation = useNavigation();
   const errors = useActionData(); // To retrieve data coming back from action
 
   return (
@@ -58,13 +52,7 @@ const Login = () => {
         {errors?.password && (
           <p className="form-input-error">{errors.password}</p>
         )}
-        <button
-          type="submit"
-          className="btn btn-block"
-          disabled={navigation.state === 'submitting'}
-        >
-          {navigation.state === 'submitting' ? 'Submitting' : 'Login'}
-        </button>
+        <SubmitButton text="Login" />
         <p>
           Not an user yet?
           <Link to="/register" className="login-link">

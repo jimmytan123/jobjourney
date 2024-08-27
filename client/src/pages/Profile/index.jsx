@@ -1,10 +1,11 @@
-import { Form, useNavigation, useActionData, Link } from 'react-router-dom';
+import { Form, useActionData, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import FormRow from '../../components/FormRow';
 import baseFetch from '../../utils/apiService';
 import { useDashboardContext } from '../DashboardLayout';
 import { Wrapper } from '../../assets/styles/styledDashboardFormPage';
 import { FaChevronLeft } from 'react-icons/fa6';
+import SubmitButton from '../../components/SubmitButton';
 
 export const action = async ({ request }) => {
   const formData = await request.formData();
@@ -45,7 +46,6 @@ export const action = async ({ request }) => {
 
 const Profile = () => {
   const { user } = useDashboardContext();
-  const navigation = useNavigation();
 
   const errors = useActionData();
 
@@ -109,13 +109,7 @@ const Profile = () => {
               <p className="form-input-error">{errors.location}</p>
             )}
           </div>
-          <button
-            type="submit"
-            className="btn btn-block form-btn"
-            disabled={navigation.state === 'submitting'}
-          >
-            {navigation.state === 'submitting' ? 'Submitting' : 'Update'}
-          </button>
+          <SubmitButton formBtn text="Update" />
         </div>
       </Form>
     </Wrapper>

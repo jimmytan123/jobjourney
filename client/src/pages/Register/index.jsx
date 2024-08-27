@@ -1,15 +1,10 @@
-import {
-  Link,
-  Form,
-  redirect,
-  useNavigation,
-  useActionData,
-} from 'react-router-dom';
+import { Link, Form, redirect, useActionData } from 'react-router-dom';
 import Logo from '../../components/Logo';
 import Wrapper from '../../assets/styles/styledAuthPage';
 import FormRow from '../../components/FormRow';
 import baseFetch from '../../utils/apiService';
 import { toast } from 'react-toastify';
+import SubmitButton from '../../components/SubmitButton';
 
 // React Router action function to handle form submission
 export async function registerAction({ request }) {
@@ -60,8 +55,6 @@ export async function registerAction({ request }) {
 }
 
 const Register = () => {
-  const navigation = useNavigation();
-
   const errors = useActionData();
   // console.log(errors);
 
@@ -96,13 +89,7 @@ const Register = () => {
         {errors?.confirmPassword && (
           <p className="form-input-error">{errors.confirmPassword}</p>
         )}
-        <button
-          type="submit"
-          className="btn btn-block"
-          disabled={navigation.state === 'submitting'}
-        >
-          {navigation.state === 'submitting' ? 'Submitting' : 'Register Now'}
-        </button>
+        <SubmitButton text="Register Now" />
         <p>
           Already an user?
           <Link to="/login" className="login-link">
