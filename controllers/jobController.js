@@ -14,7 +14,7 @@ export const getAllJobs = async (req, res, next) => {
   try {
     const userId = req.user.userId;
 
-    // url query params
+    // Query params from URL
     const { search, jobStatus, jobType, sort } = req.query;
 
     // Initialize query object
@@ -40,6 +40,7 @@ export const getAllJobs = async (req, res, next) => {
       queryObj.jobType = jobType;
     }
 
+    // Define possible sort options
     const sortOptions = {
       newest: '-createdAt',
       oldest: 'createdAt',
@@ -47,11 +48,14 @@ export const getAllJobs = async (req, res, next) => {
       'z-a': '-position',
     };
 
+    // Set sort key based on query param 'sort', defaulted to newest
     const sortKey = sortOptions[sort] || sortOptions.newest;
 
     const jobs = await Job.find(queryObj).sort(sortKey);
 
-    res.status(StatusCodes.OK).json({ jobs });
+    const totalJobs = await Job.countDocuments(queryObj);
+
+    res.status(StatusCodes.OK).json({ totalJobs, jobs });
   } catch (err) {
     next(err);
   }
