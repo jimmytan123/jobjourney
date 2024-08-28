@@ -1,6 +1,8 @@
 import Job from '../models/Job.js';
 import { StatusCodes } from 'http-status-codes';
 import { NotFoundError } from '../errors/customErrors.js';
+import mongoose from 'mongoose';
+import day from 'dayjs';
 
 /**
  * @desc Get all jobs
@@ -106,4 +108,58 @@ export const deleteJob = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+};
+
+/**
+ * @desc Return stats info
+ * @method GET
+ * @path /api/v1/jobs/stats
+ * @access PRIVATE
+ */
+export const showStats = async (req, res, next) => {
+  // Aggregate call, return the count of each job types
+  let countStats = await Job.aggregate([
+    { $match: { createdBy: new mongoose.Types.ObjectId(req.user.userId) } }, // Find all the jobs created by the current user
+    { $group: { _id: '$jobStatus', count: { $sum: 1 } } },
+  ]);
+
+  countStats = countStats.reduce((acc, curr) => {
+    const { _id: jobStatusTitle, count } = curr;
+
+    acc[jobStatusTitle] = count;
+
+    return acc;
+  }, {});
+
+  const jobStatusStats = {
+    pending: countStats.pending || 0,
+    interview: countStats.interview || 0,
+    declined: countStats.declined || 0,
+  };
+
+  let monthlyApplications = await Job.aggregate([
+    { $match: { createdBy: new mongoose.Types.ObjectId(req.user.userId) } }, // Find all the jobs created by the current user
+    {
+      $group: {
+        _id: { year: { $year: '$createdAt' }, month: { $month: '$createdAt' } },
+        count: { $sum: 1 },
+      },
+    },
+    { $sort: { '_id.year': -1, '_id.month': -1 } },
+    { $limit: 6 },
+  ]);
+
+  monthlyApplications = monthlyApplications
+    .map((item) => {
+      return {
+        date: day()
+          .month(item._id.month - 1)
+          .year(item._id.year)
+          .format('MMM YY'),
+        count: item.count,
+      };
+    })
+    .reverse();
+
+  res.status(StatusCodes.OK).json({ jobStatusStats, monthlyApplications });
 };
