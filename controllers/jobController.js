@@ -51,11 +51,20 @@ export const getAllJobs = async (req, res, next) => {
     // Set sort key based on query param 'sort', defaulted to newest
     const sortKey = sortOptions[sort] || sortOptions.newest;
 
-    const jobs = await Job.find(queryObj).sort(sortKey);
+    // Pagniation logic
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
 
+    const jobs = await Job.find(queryObj).sort(sortKey).skip(skip).limit(limit);
+
+    // Total number of jobs with the query configs
     const totalJobs = await Job.countDocuments(queryObj);
+    const numOfPages = Math.ceil(totalJobs / limit);
 
-    res.status(StatusCodes.OK).json({ totalJobs, jobs });
+    res
+      .status(StatusCodes.OK)
+      .json({ totalJobs, numOfPages, currentPage: page, jobs });
   } catch (err) {
     next(err);
   }
