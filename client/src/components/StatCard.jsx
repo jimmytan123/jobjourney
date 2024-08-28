@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-const StatCard = ({ title, count, icon, color, bgColor }) => {
+const StatCard = ({ title, count, icon, color, bgcolor }) => {
   return (
-    <Wrapper color={color} bgColor={bgColor}>
+    <Wrapper color={color} bgcolor={bgcolor}>
       <header className="header">
         <span className="icon">{icon}</span>
         <span className="count">{count}</span>
@@ -14,7 +14,7 @@ const StatCard = ({ title, count, icon, color, bgColor }) => {
 
 export default StatCard;
 
-// Accept color, bgColor as props
+// Accept color, bgcolor as props
 const Wrapper = styled.div`
   background-color: var(--background-secondary-color);
   padding: 2rem;
@@ -29,7 +29,7 @@ const Wrapper = styled.div`
 
     .icon {
       padding: 1rem;
-      background-color: ${(props) => props.bgColor};
+      background-color: ${(props) => props.bgcolor};
       border-radius: var(--border-radius);
       color: ${(props) => props.color};
       font-size: 1.5rem;
