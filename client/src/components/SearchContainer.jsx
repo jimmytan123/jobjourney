@@ -12,6 +12,21 @@ const SearchContainer = () => {
 
   const submit = useSubmit(); // For submitting form onChange
 
+  const debounce = (onChange) => {
+    let timeoutId;
+
+    return (e) => {
+      clearTimeout(timeoutId);
+
+      const form = e.currentTarget.form;
+
+      timeoutId = setTimeout(() => {
+        // Actual submission invoked here
+        onChange(form);
+      }, 800); // delay search for 800ms
+    };
+  };
+
   return (
     <Wrapper type="sm">
       <Form className="dashboard-form">
@@ -21,28 +36,36 @@ const SearchContainer = () => {
             name="search"
             labelText="Search Keywords"
             defaultValue={search}
-            onChange={(e) => submit(e.currentTarget.form)}
+            onChange={debounce((form) => {
+              submit(form);
+            })}
           />
           <FormRowSelect
             labelText="Job Status"
             name="jobStatus"
             options={['all', ...Object.values(JOB_STATUS)]}
             defaultValue={jobStatus}
-            onChange={(e) => submit(e.currentTarget.form)}
+            onChange={debounce((form) => {
+              submit(form);
+            })}
           />
           <FormRowSelect
             labelText="Job Type"
             name="jobType"
             options={['all', ...Object.values(JOB_TYPE)]}
             defaultValue={jobType}
-            onChange={(e) => submit(e.currentTarget.form)}
+            onChange={debounce((form) => {
+              submit(form);
+            })}
           />
           <FormRowSelect
             labelText="Sort"
             name="sort"
             options={Object.values(JOB_SORT_BY)}
             defaultValue={sort}
-            onChange={(e) => submit(e.currentTarget.form)}
+            onChange={debounce((form) => {
+              submit(form);
+            })}
           />
           <Link
             to="/dashboard/jobs"
