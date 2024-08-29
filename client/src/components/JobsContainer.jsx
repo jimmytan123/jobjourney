@@ -1,10 +1,12 @@
 import { useAllJobsContext } from '../pages/AllJobs';
 import JobCard from './JobCard';
 import styled from 'styled-components';
+import Pagination from './Pagination';
+import UpdatedPagination from './UpdatedPagination';
 
 const JobsContainer = () => {
   const { data } = useAllJobsContext();
-  const jobs = data.jobs;
+  const { jobs, totalJobs, numOfPages, currentPage } = data;
 
   if (jobs.length === 0)
     return (
@@ -15,11 +17,17 @@ const JobsContainer = () => {
 
   return (
     <Wrapper>
+      <h5>
+        {totalJobs} {jobs.length > 1 ? 'jobs' : 'job'} found
+      </h5>
       <div className="jobs-list">
         {jobs.map((job) => {
           return <JobCard key={job._id} {...job} />;
         })}
       </div>
+      {numOfPages > 1 && (
+        <UpdatedPagination numOfPages={numOfPages} currentPage={currentPage} />
+      )}
     </Wrapper>
   );
 };
