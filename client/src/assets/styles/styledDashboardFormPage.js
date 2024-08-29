@@ -53,6 +53,8 @@ export const Wrapper = styled.div`
   @media (min-width: 1024px) {
     padding: 4rem 3.6rem;
 
+    ${(props) => props.type === 'sm' && ' padding: 2rem 1.8rem;'}
+
     .form-center {
       grid-template-columns: 1fr 1fr;
       column-gap: 2rem;
@@ -65,6 +67,8 @@ export const Wrapper = styled.div`
 
   @media (min-width: 1440px) {
     padding: 6rem 5rem;
+
+    ${(props) => props.type === 'sm' && ' padding: 2rem 1.8rem;'}
 
     .form-center {
       grid-template-columns: 1fr 1fr 1fr;

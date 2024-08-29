@@ -3,6 +3,7 @@ const FormRowSelect = ({
   labelText,
   defaultValue = '',
   options = [],
+  onChange,
 }) => {
   return (
     <div className="form-row">
@@ -14,6 +15,7 @@ const FormRowSelect = ({
         id={name}
         className="form-select"
         defaultValue={defaultValue}
+        onChange={onChange}
       >
         {options.map((option) => {
           return (

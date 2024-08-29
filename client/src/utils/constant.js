@@ -17,3 +17,10 @@ export const USER_TYPE = {
   ADMIN: 'admin',
   default: 'user',
 };
+
+export const JOB_SORT_BY = {
+  NEWEST_FIRST: 'newest',
+  OLDEST_FIRST: 'oldest',
+  ASCENDING: 'a-z',
+  DESCENDING: 'z-a',
+};

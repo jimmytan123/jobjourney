@@ -5,11 +5,17 @@ import baseFetch from '../../utils/apiService';
 import { useLoaderData } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-export const loader = async () => {
-  try {
-    const { data } = await baseFetch.get('/jobs');
+export const loader = async ({ request }) => {
+  // Retrieve query params if it exists
+  const url = new URL(request.url);
+  const queryParams = Object.fromEntries([...url.searchParams.entries()]);
 
-    return { data };
+  try {
+    const { data } = await baseFetch.get('/jobs', {
+      params: queryParams,
+    });
+
+    return { data, searchValues: { ...queryParams } };
   } catch (err) {
     toast.error(err?.response?.data?.message);
 
@@ -20,10 +26,10 @@ export const loader = async () => {
 const AllJobsContext = createContext();
 
 const AllJobs = () => {
-  const { data } = useLoaderData();
+  const { data, searchValues } = useLoaderData();
 
   return (
-    <AllJobsContext.Provider value={{ data }}>
+    <AllJobsContext.Provider value={{ data, searchValues }}>
       <SearchContainer />
       <JobsContainer />
     </AllJobsContext.Provider>
