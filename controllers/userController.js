@@ -3,7 +3,8 @@ import Job from '../models/Job.js';
 import { StatusCodes } from 'http-status-codes';
 import { NotFoundError } from '../errors/customErrors.js';
 import { v2 as cloudinary } from 'cloudinary';
-import { promises as fs } from 'fs';
+// import { promises as fs } from 'fs';
+import { formatImage } from '../middleware/multerMiddleware.js';
 
 /**
  * @desc Get user profile
@@ -35,11 +36,11 @@ export const updateUser = async (req, res, next) => {
     const updatedUserInfo = { ...req.body };
 
     if (req.file) {
-      // Upload an image to cloudinary
-      const uploadResult = await cloudinary.uploader.upload(req.file.path);
+      // Call helper function for formatting the image to prepare for cloudinary upload
+      const file = formatImage(req.file);
 
-      // Right after, remove the image store in our static folder
-      await fs.unlink(req.file.path);
+      // Upload an image to cloudinary
+      const uploadResult = await cloudinary.uploader.upload(file);
 
       updatedUserInfo.avatar = uploadResult.secure_url;
       updatedUserInfo.avatarPublicId = uploadResult.public_id;
