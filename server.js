@@ -56,6 +56,11 @@ app.use('/api/v1/jobs', authenticateUser, jobRouter);
 app.use('/api/v1/users', authenticateUser, userRouter);
 app.use('/api/v1/admin', authenticateUser, adminRouter);
 
+// Set up path for Front-end entry point, the public/index.html coming from the FE build(dist) file
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, './public', 'index.html'));
+});
+
 // NOT FOUND Route
 app.use('*', (req, res) => {
   res.status(StatusCodes.NOT_FOUND).json({ message: 'Not found' });
