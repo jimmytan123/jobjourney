@@ -8,6 +8,7 @@
     "setup-project": "npm i && cd client && npm i",
     "server": "nodemon server",
     "client": "cd client && npm run dev",
+    "build-client": "cd client && npm run build",
     "dev": "concurrently -n 'server,client' -c 'red,green' --kill-others-on-fail \" npm run server\" \" npm run client\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
