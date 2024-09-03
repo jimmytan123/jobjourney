@@ -26,7 +26,7 @@ const JobsContainer = () => {
         })}
       </div>
       {numOfPages > 1 && (
-        <UpdatedPagination numOfPages={numOfPages} currentPage={currentPage} />
+        <Pagination numOfPages={numOfPages} currentPage={currentPage} />
       )}
     </Wrapper>
   );

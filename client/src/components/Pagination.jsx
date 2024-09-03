@@ -58,4 +58,53 @@ const Pagination = ({ numOfPages, currentPage }) => {
 
 export default Pagination;
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  height: 5rem;
+  margin: 2rem 0.5rem 0 0.5rem;
+  display: flex;
+  justify-content: end;
+  gap: 0.8rem;
+  align-items: center;
+  flex-wrap: wrap;
+
+  .btn {
+    border-radius: 0;
+  }
+
+  .btn:disabled {
+    pointer-events: none;
+    background-color: var(--primary-400);
+  }
+
+  .prev-btn,
+  .next-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    justify-content: center;
+    height: 40px;
+    width: 80px;
+    font-weight: 700;
+  }
+
+  .btn-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .page-btn {
+    color: var(--primary-500);
+    border-color: transparent;
+    width: 45px;
+    height: 40px;
+    font-weight: 700;
+    font-size: 1.25rem;
+    background-color: var(--background-secondary-color);
+  }
+
+  .active {
+    background-color: var(--primary-500);
+    color: var(--white);
+  }
+`;

@@ -12,6 +12,7 @@ const UpdatedPagination = ({ numOfPages, currentPage }) => {
     pageArr.push(i);
   }
 
+  // Helper method for page number button
   const pageButton = ({ pageNumber, activeClass }) => {
     return (
       <button
@@ -24,10 +25,11 @@ const UpdatedPagination = ({ numOfPages, currentPage }) => {
     );
   };
 
+  // Render an array of JSX buttons element
   const renderPageButtons = () => {
     const pageButtons = [];
 
-    // First Page
+    // First Page btn
     pageButtons.push(
       pageButton({ pageNumber: 1, activeClass: currentPage === 1 })
     );
@@ -41,21 +43,21 @@ const UpdatedPagination = ({ numOfPages, currentPage }) => {
       );
     }
 
-    // One right before current page
+    // The one right before current page
     if (currentPage !== 1 && currentPage !== 2) {
       pageButtons.push(
         pageButton({ pageNumber: currentPage - 1, activeClass: false })
       );
     }
 
-    // Current
+    // Current page btn
     if (currentPage !== 1 && currentPage !== numOfPages) {
       pageButtons.push(
         pageButton({ pageNumber: currentPage, activeClass: true })
       );
     }
 
-    // One right after current page
+    // The one right after current page
     if (currentPage + 1 !== numOfPages && currentPage !== numOfPages) {
       pageButtons.push(
         pageButton({ pageNumber: currentPage + 1, activeClass: false })
@@ -71,7 +73,7 @@ const UpdatedPagination = ({ numOfPages, currentPage }) => {
       );
     }
 
-    // Last Page
+    // Last Page btn
     pageButtons.push(
       pageButton({
         pageNumber: numOfPages,
@@ -82,6 +84,7 @@ const UpdatedPagination = ({ numOfPages, currentPage }) => {
     return pageButtons;
   };
 
+  // Handler when the page btn being clicked
   const handlePageNumClick = (pageNum) => {
     // Get the current search params
     const searchParams = new URLSearchParams(search);
@@ -90,6 +93,7 @@ const UpdatedPagination = ({ numOfPages, currentPage }) => {
 
     const updatedUrl = `${pathname}?${searchParams.toString()}`;
 
+    // Navigate to the updated URL
     navigate(updatedUrl);
   };
 
@@ -116,4 +120,59 @@ const UpdatedPagination = ({ numOfPages, currentPage }) => {
 
 export default UpdatedPagination;
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  height: 5rem;
+  margin: 2rem 0.5rem 0 0.5rem;
+  display: flex;
+  justify-content: end;
+  gap: 0.8rem;
+  align-items: center;
+  flex-wrap: wrap;
+
+  .btn {
+    border-radius: 0;
+  }
+
+  .btn:disabled {
+    pointer-events: none;
+    background-color: var(--primary-400);
+  }
+
+  .prev-btn,
+  .next-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    justify-content: center;
+    height: 40px;
+    width: 80px;
+    font-weight: 700;
+  }
+
+  .btn-container {
+    background-color: var(--background-secondary-color);
+    display: flex;
+    align-items: center;
+  }
+
+  .page-btn {
+    color: var(--primary-500);
+    background-color: transparent;
+    border-color: transparent;
+    width: 45px;
+    height: 40px;
+    font-weight: 700;
+    font-size: 1.25rem;
+  }
+
+  .active {
+    background-color: var(--primary-500);
+    color: var(--white);
+  }
+
+  .dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+`;
