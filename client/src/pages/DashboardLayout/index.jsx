@@ -12,6 +12,7 @@ import Navbar from '../../components/Navbar';
 import { Wrapper } from './styled';
 import { checkAndSetDefaultTheme } from '../../utils/checkTheme';
 import baseFetch from '../../utils/apiService';
+import Loading from '../../components/Loading';
 
 // Loader for route (React router)
 export const loader = async () => {
@@ -42,6 +43,7 @@ const DashboardLayout = () => {
   const user = data.user;
 
   const navigate = useNavigate();
+  const navigation = useNavigation();
 
   const [showSidebar, setShowSidebar] = useState(false);
   const [isDarkTheme, setIsDarkTheme] = useState(checkAndSetDefaultTheme());
@@ -91,7 +93,7 @@ const DashboardLayout = () => {
           <div>
             <Navbar />
             <div className="dashboard-content">
-              <Outlet />
+              {navigation.state === 'loading' ? <Loading /> : <Outlet />}
             </div>
           </div>
         </main>

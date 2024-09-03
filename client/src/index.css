@@ -336,6 +336,13 @@ button:disabled {
   animation: spinner 0.6s linear infinite;
 }
 
+.loading-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - var(--nav-height) - 4rem);
+}
+
 /* title */
 .title {
   text-align: center;
