@@ -25,15 +25,28 @@ import { action as deleteAction } from './pages/DeleteJob';
 import { loader as adminLoader } from './pages/Admin';
 import { action as profileAction } from './pages/Profile';
 import { loader as statsLoader } from './pages/Stats';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import ErrorComponent from './components/ErrorComponent';
 
 // Check UI theme settings when initialize the App, and set theme
 checkAndSetDefaultTheme();
 
+// Create a react query client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // Data is fresh for 5 mins
+    },
+  },
+});
+
+// Create router and define routes
 const router = createBrowserRouter([
   {
     path: '/',
     element: <HomeLayout />,
-    errorElement: <Error />, // Error page component
+    errorElement: <Error />, // Error page component, catch-all
     children: [
       {
         index: true,
@@ -77,7 +90,8 @@ const router = createBrowserRouter([
           {
             path: 'stats',
             element: <Stats />,
-            loader: statsLoader,
+            loader: statsLoader(queryClient),
+            errorElement: <ErrorComponent />,
           },
           {
             path: 'profile',
@@ -96,7 +110,13 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      {/* Dev tool only will show in dev mode */}
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+  );
 }
 
 export default App;
