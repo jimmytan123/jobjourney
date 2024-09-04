@@ -13,33 +13,43 @@ import { Wrapper } from './styled';
 import { checkAndSetDefaultTheme } from '../../utils/checkTheme';
 import baseFetch from '../../utils/apiService';
 import Loading from '../../components/Loading';
+import { useQuery } from '@tanstack/react-query';
 
-// Loader for route (React router)
-export const loader = async () => {
-  try {
+// Define user query
+const userQuery = {
+  queryKey: ['user'],
+  queryFn: async () => {
     // Make API request to get current user info
     const { data } = await baseFetch.get('/users/current');
 
     return data;
-  } catch (err) {
-    console.log(err);
+  },
+};
 
-    // Redirect to login page
-    if (err.response.status === 401) {
-      return redirect('/login');
+// Loader for route (React router)
+export const loader = (queryClient) => {
+  return async () => {
+    try {
+      return await queryClient.ensureQueryData(userQuery);
+    } catch (err) {
+      console.log(err);
+
+      // Redirect to login page
+      if (err.response.status === 401) {
+        return redirect('/login');
+      }
+
+      return err;
     }
-
-    return err;
-  }
+  };
 };
 
 // Create a React Context for dashboard items
 const DashboardContext = createContext();
 
 // Layout component for nav, sidebar, body content and shared states
-const DashboardLayout = () => {
-  // Access the loader data, data was fetched to the route element before it renders
-  const data = useLoaderData();
+const DashboardLayout = ({ queryClient }) => {
+  const { data } = useQuery(userQuery);
   const user = data.user;
 
   const navigate = useNavigate();
@@ -68,6 +78,9 @@ const DashboardLayout = () => {
     try {
       // Make api request to destroy jwt cookie
       await baseFetch.get('/auth/logout');
+
+      // Invalidate all react queries
+      queryClient.invalidateQueries();
 
       navigate('/login');
     } catch (err) {

@@ -12,36 +12,41 @@ import baseFetch from '../../utils/apiService';
 import { toast } from 'react-toastify';
 import SubmitButton from '../../components/SubmitButton';
 
-export const loginAction = async ({ request }) => {
-  // Retrieve form data
-  const formData = await request.formData();
-  const data = Object.fromEntries(formData);
+export const loginAction = (queryClient) => {
+  return async ({ request }) => {
+    // Retrieve form data
+    const formData = await request.formData();
+    const data = Object.fromEntries(formData);
 
-  // Retrieve inputs
-  const email = formData.get('email');
-  const password = formData.get('password');
+    // Retrieve inputs
+    const email = formData.get('email');
+    const password = formData.get('password');
 
-  // Input validation
-  const errors = {};
-  if (!email) errors.email = 'Email is required';
-  if (!password) errors.password = 'Password is required';
+    // Input validation
+    const errors = {};
+    if (!email) errors.email = 'Email is required';
+    if (!password) errors.password = 'Password is required';
 
-  // If there are validation errors, return them
-  if (Object.keys(errors).length) {
-    // console.log(errors);
-    return errors;
-  }
+    // If there are validation errors, return them
+    if (Object.keys(errors).length) {
+      // console.log(errors);
+      return errors;
+    }
 
-  // Otherwise, make api call to log user in, and redirect to dashboard
-  try {
-    await baseFetch.post('/auth/login', data);
+    // Otherwise, make api call to log user in, and redirect to dashboard
+    try {
+      await baseFetch.post('/auth/login', data);
 
-    return redirect('/dashboard');
-  } catch (err) {
-    // console.log(err);
-    toast.error(err?.response?.data?.message);
-    return err;
-  }
+      // Invalidate react queries
+      queryClient.invalidateQueries();
+
+      return redirect('/dashboard');
+    } catch (err) {
+      // console.log(err);
+      toast.error(err?.response?.data?.message);
+      return err;
+    }
+  };
 };
 
 const Login = () => {
@@ -77,7 +82,11 @@ const Login = () => {
           <p className="form-input-error">{errors.password}</p>
         )}
         <SubmitButton text="Login" />
-        <button type="button" className="btn btn-block btn-demo" onClick={loginTestUser}>
+        <button
+          type="button"
+          className="btn btn-block btn-demo"
+          onClick={loginTestUser}
+        >
           Explore as a test user
         </button>
         <p>

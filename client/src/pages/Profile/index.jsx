@@ -1,4 +1,4 @@
-import { Form, useActionData, Link } from 'react-router-dom';
+import { Form, useActionData, Link, redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import FormRow from '../../components/FormRow';
 import baseFetch from '../../utils/apiService';
@@ -7,41 +7,48 @@ import { Wrapper } from '../../assets/styles/styledDashboardFormPage';
 import { FaChevronLeft } from 'react-icons/fa6';
 import SubmitButton from '../../components/SubmitButton';
 
-export const action = async ({ request }) => {
-  const formData = await request.formData();
+export const action = (queryClient) => {
+  return async ({ request }) => {
+    const formData = await request.formData();
 
-  // Input validation
-  const name = formData.get('name');
-  const lastName = formData.get('lastName');
-  const email = formData.get('email');
-  const location = formData.get('location');
-  const avatar = formData.get('avatar');
+    // Input validation
+    const name = formData.get('name');
+    const lastName = formData.get('lastName');
+    const email = formData.get('email');
+    const location = formData.get('location');
+    const avatar = formData.get('avatar');
 
-  const errors = {};
+    const errors = {};
 
-  if (!name) errors.firstName = 'Name required';
-  if (!lastName) errors.lastName = 'Last name required';
-  if (!email || !/^\S+@\S+\.\S+$/.test(email))
-    errors.email = 'Valid email is required';
-  if (!location) errors.location = 'Location is required';
-  if (avatar && avatar.size > 50000) {
-    errors.avatar = 'Image size too large, please upload again';
-  }
+    if (!name) errors.firstName = 'Name required';
+    if (!lastName) errors.lastName = 'Last name required';
+    if (!email || !/^\S+@\S+\.\S+$/.test(email))
+      errors.email = 'Valid email is required';
+    if (!location) errors.location = 'Location is required';
+    if (avatar && avatar.size > 50000) {
+      errors.avatar = 'Image size too large, please upload again';
+    }
 
-  if (Object.keys(errors).length > 0) {
-    // console.log(errors);
-    return errors;
-  }
+    if (Object.keys(errors).length > 0) {
+      // console.log(errors);
+      return errors;
+    }
 
-  try {
-    await baseFetch.patch('/users/current', formData); // directly submit the form data for file upload inputs
-    toast.success('Profile updated');
-  } catch (err) {
-    // console.log(err);
-    toast.error(err?.response?.data?.message);
-  }
+    try {
+      await baseFetch.patch('/users/current', formData); // directly submit the form data for file upload inputs
 
-  return null;
+      // Invalidate user query
+      queryClient.invalidateQueries({ queryKey: ['user'] });
+
+      toast.success('Profile updated');
+
+      return redirect('/dashboard/jobs');
+    } catch (err) {
+      // console.log(err);
+      toast.error(err?.response?.data?.message);
+      return null;
+    }
+  };
 };
 
 const Profile = () => {

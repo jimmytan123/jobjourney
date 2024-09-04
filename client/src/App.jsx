@@ -60,12 +60,12 @@ const router = createBrowserRouter([
       {
         path: 'login',
         element: <Login />,
-        action: loginAction,
+        action: loginAction(queryClient),
       },
       {
         path: 'dashboard',
-        element: <DashboardLayout />, // Layout for dashboard(nav, side nav, content)
-        loader: dashboardLoader,
+        element: <DashboardLayout queryClient={queryClient} />, // Layout for dashboard(nav, side nav, content)
+        loader: dashboardLoader(queryClient),
         children: [
           {
             index: true,
@@ -96,7 +96,7 @@ const router = createBrowserRouter([
           {
             path: 'profile',
             element: <Profile />,
-            action: profileAction,
+            action: profileAction(queryClient),
           },
           {
             path: 'admin',
