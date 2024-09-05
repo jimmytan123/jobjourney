@@ -70,22 +70,23 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <AddJob />,
-            action: addJobAction,
+            action: addJobAction(queryClient),
           },
           {
             path: 'jobs',
             element: <AllJobs />,
-            loader: allJobsLoader,
+            loader: allJobsLoader(queryClient),
+            errorElement: <ErrorComponent />,
           },
           {
             path: 'edit-job/:jobId',
             element: <EditJob />,
-            loader: editJobLoader,
-            action: editAction,
+            loader: editJobLoader(queryClient),
+            action: editAction(queryClient),
           },
           {
             path: 'delete-job/:jobId',
-            action: deleteAction, //https://reactrouter.com/en/main/start/tutorial#deleting-records
+            action: deleteAction(queryClient), //https://reactrouter.com/en/main/start/tutorial#deleting-records
           },
           {
             path: 'stats',

@@ -3,30 +3,53 @@ import SearchContainer from '../../components/SearchContainer';
 import { useContext, createContext } from 'react';
 import baseFetch from '../../utils/apiService';
 import { useLoaderData } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { useQuery } from '@tanstack/react-query';
 
-export const loader = async ({ request }) => {
-  // Retrieve query params if it exists
-  const url = new URL(request.url);
-  const queryParams = Object.fromEntries([...url.searchParams.entries()]);
+// Define query(accept dynamic params to make different calls)
+const allJobsQuery = (queryParams) => {
+  const { search, jobStatus, jobType, sort, page } = queryParams;
 
-  try {
-    const { data } = await baseFetch.get('/jobs', {
-      params: queryParams,
-    });
+  return {
+    // Construct query key based on query params
+    queryKey: [
+      'jobs',
+      search ?? '',
+      jobStatus ?? 'all',
+      jobType ?? 'all',
+      sort ?? 'newest',
+      page ?? 1,
+    ],
+    queryFn: async () => {
+      const { data } = await baseFetch.get('/jobs', {
+        params: queryParams,
+      });
 
-    return { data, searchValues: { ...queryParams } };
-  } catch (err) {
-    toast.error(err?.response?.data?.message);
+      return data;
+    },
+  };
+};
 
-    return err;
-  }
+export const loader = (queryClient) => {
+  return async ({ request }) => {
+    // Retrieve query params if it exists
+    const url = new URL(request.url);
+    const queryParams = Object.fromEntries([...url.searchParams.entries()]);
+
+    // Get query
+    const query = allJobsQuery(queryParams);
+
+    // Make sure that the cache for the specified query is up-to-date. If the data is not in the cache or if it's stale, will then fetch the latest data from the server and update the cache.
+    await queryClient.ensureQueryData(query);
+
+    return { searchValues: { ...queryParams } };
+  };
 };
 
 const AllJobsContext = createContext();
 
 const AllJobs = () => {
-  const { data, searchValues } = useLoaderData();
+  const { searchValues } = useLoaderData();
+  const { data } = useQuery(allJobsQuery(searchValues));
 
   return (
     <AllJobsContext.Provider value={{ data, searchValues }}>

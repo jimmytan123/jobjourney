@@ -13,56 +13,88 @@ import { Wrapper } from '../../assets/styles/styledDashboardFormPage';
 import { JOB_STATUS, JOB_TYPE } from '../../utils/constant';
 import { FaChevronLeft } from 'react-icons/fa6';
 import SubmitButton from '../../components/SubmitButton';
+import { useQuery } from '@tanstack/react-query';
 
-export const loader = async ({ params }) => {
-  const id = params.jobId; // Retrieve URL Params
+// Define job query
+const singleJobQuery = (id) => {
+  return {
+    queryKey: ['job', id],
+    queryFn: async () => {
+      const { data } = await baseFetch.get(`/jobs/${id}`);
 
-  try {
-    const { data } = await baseFetch.get(`/jobs/${id}`);
-
-    return data;
-  } catch (err) {
-    toast.error(err?.response?.data?.message);
-
-    return redirect('/dashboard/jobs');
-  }
+      return data;
+    },
+  };
 };
 
-export const action = async ({ request, params }) => {
-  // Retrieve submitted form data
-  const formData = await request.formData();
-  const data = Object.fromEntries(formData);
+export const loader = (queryClient) => {
+  return async ({ params }) => {
+    const id = params.jobId; // Retrieve URL Params
 
-  // Input validation
-  const errors = {};
-  if (!data.position || data.position.length < 2 || data.position.length > 50) {
-    errors.position =
-      'Position is required, and must be 2 to 50 characters long';
-  }
-  if (!data.company) errors.company = 'Company is required';
-  if (!data.jobLocation) errors.jobLocation = 'Location is required';
+    try {
+      const query = singleJobQuery(id);
+      await queryClient.ensureQueryData(query);
 
-  if (Object.keys(errors).length > 0) {
-    // console.log(errors);
-    return errors;
-  }
+      return { id };
+    } catch (err) {
+      toast.error(err?.response?.data?.message);
 
-  try {
-    await baseFetch.patch(`/jobs/${params.jobId}`, data);
+      return redirect('/dashboard/jobs');
+    }
+  };
+};
 
-    toast.success('Job updated');
+export const action = (queryClient) => {
+  return async ({ request, params }) => {
+    // Retrieve submitted form data
+    const formData = await request.formData();
+    const data = Object.fromEntries(formData);
 
-    return redirect('/dashboard/jobs');
-  } catch (err) {
-    // console.log(err);
-    toast.error(err?.response?.data?.message);
-    return err;
-  }
+    // Input validation
+    const errors = {};
+    if (
+      !data.position ||
+      data.position.length < 2 ||
+      data.position.length > 50
+    ) {
+      errors.position =
+        'Position is required, and must be 2 to 50 characters long';
+    }
+    if (!data.company) errors.company = 'Company is required';
+    if (!data.jobLocation) errors.jobLocation = 'Location is required';
+
+    if (Object.keys(errors).length > 0) {
+      // console.log(errors);
+      return errors;
+    }
+
+    try {
+      await baseFetch.patch(`/jobs/${params.jobId}`, data);
+
+      queryClient.invalidateQueries({
+        queryKey: ['jobs'],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ['job'],
+      });
+
+      toast.success('Job updated');
+
+      return redirect('/dashboard/jobs');
+    } catch (err) {
+      // console.log(err);
+      toast.error(err?.response?.data?.message);
+      return err;
+    }
+  };
 };
 
 const EditJob = () => {
   // Retrieve job data to prefill the form values
-  const { job } = useLoaderData();
+  const { id } = useLoaderData();
+  const { data } = useQuery(singleJobQuery(id));
+  const job = data.job;
 
   const errors = useActionData();
 
