@@ -5,6 +5,8 @@ import mongoose from 'mongoose';
 import cookieParser from 'cookie-parser';
 import { StatusCodes } from 'http-status-codes';
 import { v2 as cloudinary } from 'cloudinary';
+import helmet from 'helmet';
+import mongoSanitize from 'express-mongo-sanitize';
 
 // Import middlewares
 import { authenticateUser } from './middleware/authMiddleware.js';
@@ -46,9 +48,13 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-app.get('/', (req, res) => {
-  res.send('Server is running');
-});
+// Security configs
+app.use(helmet());
+app.use(mongoSanitize());
+
+// app.get('/', (req, res) => {
+//   res.send('Server is running');
+// });
 
 // API routes
 app.use('/api/v1/auth', authRouter);
