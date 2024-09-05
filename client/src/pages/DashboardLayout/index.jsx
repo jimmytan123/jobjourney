@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import {
   Outlet,
   redirect,
@@ -34,7 +34,7 @@ export const loader = (queryClient) => {
     } catch (err) {
       console.log(err);
 
-      // Redirect to login page
+      // User not authed, redirect to login page
       if (err.response.status === 401) {
         return redirect('/login');
       }
@@ -57,6 +57,8 @@ const DashboardLayout = ({ queryClient }) => {
 
   const [showSidebar, setShowSidebar] = useState(false);
   const [isDarkTheme, setIsDarkTheme] = useState(checkAndSetDefaultTheme());
+
+  const [isAuthError, setIsAuthError] = useState(false);
 
   const toggleDarkTheme = () => {
     // Update theme setting
@@ -87,6 +89,27 @@ const DashboardLayout = ({ queryClient }) => {
       console.log(err);
     }
   };
+
+  // Add api call response interceptor for detecting auth user error
+  baseFetch.interceptors.response.use(
+    (res) => {
+      return res;
+    },
+    (err) => {
+      if (err?.response?.status === 401) {
+        setIsAuthError(true);
+      }
+
+      return Promise.reject(err);
+    }
+  );
+
+  useEffect(() => {
+    if (!isAuthError) return;
+
+    // Log user out if there is 401 auth error
+    logoutUser();
+  }, [isAuthError]);
 
   return (
     <DashboardContext.Provider
