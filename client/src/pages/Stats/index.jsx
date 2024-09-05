@@ -2,19 +2,30 @@ import StatsContainer from '../../components/StatsContainer';
 import ChartsContainer from '../../components/ChartsContainer';
 import baseFetch from '../../utils/apiService';
 import { useLoaderData } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
-export const loader = async () => {
-  try {
-    const { data } = await baseFetch.get('jobs/stats');
+// Define query
+const statsQuery = {
+  queryKey: ['stats'],
+  queryFn: async () => {
+    const response = await baseFetch.get('jobs/stats');
+    return response.data;
+  },
+};
 
-    return data;
-  } catch (err) {
-    return err;
-  }
+// router loader needs access to queryClient
+export const loader = (queryClient) => {
+  return async () => {
+    // https://tkdodo.eu/blog/react-query-meets-react-router#querifying-the-example
+    const data = await queryClient.fetchQuery(statsQuery);
+
+    return null;
+  };
 };
 
 const Stats = () => {
-  const { jobStatusStats, monthlyApplications } = useLoaderData();
+  const { data } = useQuery(statsQuery);
+  const { jobStatusStats, monthlyApplications } = data;
 
   return (
     <>

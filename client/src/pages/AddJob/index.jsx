@@ -9,36 +9,44 @@ import { JOB_STATUS, JOB_TYPE } from '../../utils/constant';
 import { FaChevronLeft } from 'react-icons/fa6';
 import SubmitButton from '../../components/SubmitButton';
 
-export const action = async ({ request }) => {
-  // Retrieve form data
-  const formData = await request.formData();
-  const data = Object.fromEntries(formData);
+export const action = (queryClient) => {
+  return async ({ request }) => {
+    // Retrieve form data
+    const formData = await request.formData();
+    const data = Object.fromEntries(formData);
 
-  // Input validation
-  const errors = {};
-  if (!data.position || data.position.length < 2 || data.position.length > 50) {
-    errors.position =
-      'Position is required, and must be 2 to 50 characters long';
-  }
-  if (!data.company) errors.company = 'Company is required';
-  if (!data.jobLocation) errors.jobLocation = 'Location is required';
+    // Input validation
+    const errors = {};
+    if (
+      !data.position ||
+      data.position.length < 2 ||
+      data.position.length > 50
+    ) {
+      errors.position =
+        'Position is required, and must be 2 to 50 characters long';
+    }
+    if (!data.company) errors.company = 'Company is required';
+    if (!data.jobLocation) errors.jobLocation = 'Location is required';
 
-  if (Object.keys(errors).length > 0) {
-    // console.log(errors);
-    return errors;
-  }
+    if (Object.keys(errors).length > 0) {
+      // console.log(errors);
+      return errors;
+    }
 
-  try {
-    await baseFetch.post('/jobs', data);
+    try {
+      await baseFetch.post('/jobs', data);
 
-    toast.success('Job added');
+      queryClient.invalidateQueries({ queryKey: ['jobs'] });
 
-    return redirect('/dashboard/jobs');
-  } catch (err) {
-    // console.log(err);
-    toast.error(err?.response?.data?.message);
-    return err;
-  }
+      toast.success('Job added');
+
+      return redirect('/dashboard/jobs');
+    } catch (err) {
+      // console.log(err);
+      toast.error(err?.response?.data?.message);
+      return err;
+    }
+  };
 };
 
 const AddJob = () => {
