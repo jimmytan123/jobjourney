@@ -50,6 +50,14 @@ cloudinary.config({
 
 // Security configs
 app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    useDefaults: true,
+    directives: {
+      'img-src': ["'self'", 'https: data:'],
+    },
+  })
+);
 app.use(mongoSanitize());
 
 // app.get('/', (req, res) => {
