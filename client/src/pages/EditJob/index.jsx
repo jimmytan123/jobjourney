@@ -76,7 +76,7 @@ export const action = (queryClient) => {
       });
 
       queryClient.invalidateQueries({
-        queryKey: ['job'],
+        queryKey: ['job', params.jobId],
       });
 
       toast.success('Job updated');
