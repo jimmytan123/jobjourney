@@ -20,22 +20,28 @@ const JobsContainer = () => {
   }
 
   const handleExport = async () => {
-    const response = await axios.get('/api/v1/jobs/downloadExcel', {
-      responseType: 'blob',
-    });
+    try {
+      const response = await axios.get('/api/v1/jobs/downloadExcel', {
+        responseType: 'blob',
+      });
 
-    // Create a download link and trigger the download
-    const url = window.URL.createObjectURL(new Blob([response.data]));
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'jobs.xlsx'); // Set the file name
-    document.body.appendChild(link);
-    // Trigger the download
-    link.click();
-    // Clean up after download
-    link.remove();
+      // Create a download link and trigger the download
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'jobs.xlsx'); // Set the file name
+      document.body.appendChild(link);
+      // Trigger the download
+      link.click();
+      // Clean up after download
+      link.remove();
 
-    toast.success('Exporting and downloading all jobs in Excel file');
+      toast.success('Exporting and downloading all jobs in Excel file');
+    } catch (err) {
+      console.log(err);
+      
+      toast.error('Exporting failed, please try again later');
+    }
   };
 
   return (
