@@ -138,3 +138,21 @@ export const validateUpdateUserInput = withValidationErrors([
   body('role').not().exists().withMessage('cannot update user role'), // Prevent updating the role
   body('password').not().exists().withMessage('cannot update password here'), // Prevent updating the pw here
 ]);
+
+// For user request resetting password
+export const validateForgetPasswordUserInput = withValidationErrors([
+  body('email')
+    .notEmpty()
+    .withMessage('email is required')
+    .isEmail()
+    .withMessage('valid email format is required'),
+]);
+
+// For user entering new password
+export const validateNewPasswordUserInput = withValidationErrors([
+  body('password')
+    .notEmpty()
+    .withMessage('password is required')
+    .isLength({ min: 8, max: 20 })
+    .withMessage('password must be at least 8 and at most 20 characters long'),
+]);
