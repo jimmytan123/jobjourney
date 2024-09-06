@@ -3,6 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import { NotFoundError } from '../errors/customErrors.js';
 import mongoose from 'mongoose';
 import day from 'dayjs';
+import excelJs from 'exceljs';
 
 /**
  * @desc Get all jobs
@@ -212,4 +213,81 @@ export const showStats = async (req, res, next) => {
     .reverse();
 
   res.status(StatusCodes.OK).json({ jobStatusStats, monthlyApplications });
+};
+
+/**
+ * @desc Download all jobs created by the user in excel format
+ * @method GET
+ * @path /api/v1/jobs/downloadExcel
+ * @access PRIVATE
+ */
+export const exportJobs = async (req, res, next) => {
+  try {
+    // Find jobs created by user in DB
+    const jobs = await Job.find({ createdBy: req.user.userId });
+
+    // Prepare data to export
+    let jobsDataForExport = [];
+
+    jobs.forEach((job) => {
+      const {
+        createdAt,
+        company,
+        position,
+        jobStatus,
+        jobType,
+        jobLocation,
+        link,
+      } = job;
+
+      jobsDataForExport.push({
+        createdAt: day(createdAt).format('YYYY-MM-DD'),
+        company,
+        position,
+        jobStatus,
+        jobType,
+        jobLocation,
+        link: link || 'N/A',
+      });
+    });
+
+    const workbook = new excelJs.Workbook();
+    const worksheet = workbook.addWorksheet('Jobs');
+
+    // Define columns in the worksheet
+    worksheet.columns = [
+      { header: 'Date', key: 'createdAt', width: 25 },
+      { header: 'Company', key: 'company', width: 25 },
+      { header: 'Position', key: 'position', width: 25 },
+      { header: 'Status', key: 'jobStatus', width: 15 },
+      { header: 'Type', key: 'jobType', width: 15 },
+      { header: 'Location', key: 'jobLocation', width: 15 },
+      { header: 'Link', key: 'link', width: 15 },
+    ];
+
+    // Add data to the worksheet
+    jobsDataForExport.forEach((job) => {
+      return worksheet.addRow(job);
+    });
+
+    // Making first line in excel bold
+    worksheet.getRow(1).eachCell((cell) => {
+      cell.font = { bold: true };
+    });
+
+    // Set up the response headers for Excel file download
+    res.setHeader(
+      'Content-Type',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    );
+    res.setHeader('Content-Disposition', 'attachment; filename=jobs.xlsx');
+
+    // Write the Excel file to the response
+    await workbook.xlsx.write(res);
+
+    // End the response
+    res.end();
+  } catch (err) {
+    next(err);
+  }
 };
