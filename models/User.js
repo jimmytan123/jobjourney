@@ -31,6 +31,8 @@ const UserSchema = new mongoose.Schema(
     },
     avatar: String,
     avatarPublicId: String,
+    resetToken: String, // optional for reset pw
+    resetTokenExpiration: Date, // optional for reset pw
     // jobs: [{ type: Schema.Types.ObjectId, ref: 'Job' }],
   },
   { timestamps: true }

@@ -90,6 +90,12 @@ const Login = () => {
           Explore as a test user
         </button>
         <p>
+          Forget password?
+          <Link to="/forget-password" className="login-link">
+            Reset Password
+          </Link>
+        </p>
+        <p>
           Not an user yet?
           <Link to="/register" className="login-link">
             Register

@@ -21,6 +21,9 @@ JWT_EXPIRES_IN=1d
 CLOUDINARY_NAME=your_cloudinary_name
 CLOUDINARY_API_KEY=your_cloudinary_key
 CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+RESEND_API_KEY=your_resend_api_key
+SENDER_EMAIL=onboarding@resend.dev
+BASE_URL=http://localhost:5173
 ```
 
 **Run the application:**

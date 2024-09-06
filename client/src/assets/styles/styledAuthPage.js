@@ -32,7 +32,8 @@ const Wrapper = styled.div`
     line-height: 1.4;
   }
 
-  .login-link {
+  .login-link,
+  .backhome-link {
     display: inline-block;
     margin-top: 1rem;
     color: var(--primary-500);

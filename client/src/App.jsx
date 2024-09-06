@@ -28,6 +28,10 @@ import { loader as statsLoader } from './pages/Stats';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import ErrorComponent from './components/ErrorComponent';
+import ForgetPassword from './pages/ForgetPassword';
+import { action as forgetPasswordAction } from './pages/ForgetPassword';
+import NewPassword from './pages/NewPassword';
+import { action as ResetPasswordAction } from './pages/NewPassword';
 
 // Check UI theme settings when initialize the App, and set theme
 checkAndSetDefaultTheme();
@@ -61,6 +65,16 @@ const router = createBrowserRouter([
         path: 'login',
         element: <Login />,
         action: loginAction(queryClient),
+      },
+      {
+        path: 'forget-password',
+        element: <ForgetPassword />,
+        action: forgetPasswordAction,
+      },
+      {
+        path: 'reset/:token',
+        element: <NewPassword />,
+        action: ResetPasswordAction,
       },
       {
         path: 'dashboard',
