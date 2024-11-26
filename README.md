@@ -1,3 +1,10 @@
+# JobJourney 
+A full-stack job application tracker to help users efficiently manage,
+update and track their job applications. 
+
+MongoDB Atlas, Express, Node.js, JWT, React, CSS, Styled-Components, React Query, React Router(loader and action)
+
+
 ## Installation
 
 Clone or download the project
