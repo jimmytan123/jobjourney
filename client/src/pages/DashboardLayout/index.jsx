@@ -82,7 +82,7 @@ const DashboardLayout = ({ queryClient }) => {
       await baseFetch.get('/auth/logout');
 
       // Invalidate all react queries
-      queryClient.invalidateQueries();
+      // queryClient.invalidateQueries();
 
       navigate('/login');
     } catch (err) {
