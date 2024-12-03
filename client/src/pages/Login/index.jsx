@@ -49,12 +49,15 @@ export const loginAction = (queryClient) => {
   };
 };
 
-const Login = () => {
+const Login = ({ queryClient }) => {
   const errors = useActionData(); // To retrieve data coming back from action
 
   const navigate = useNavigate();
 
   const loginTestUser = async () => {
+    // Invalidate react queries
+    await queryClient.invalidateQueries();
+
     const testUserCredentials = {
       email: 'test@email.com',
       password: 'testtest',
