@@ -1,3 +1,4 @@
+import React from 'react';
 import { useDashboardContext } from '../pages/DashboardLayout';
 import styled from 'styled-components';
 import { IoClose } from 'react-icons/io5';
@@ -17,6 +18,7 @@ const SmallSidebar = () => {
       <div
         className={`sidebar-container ${showSidebar ? 'show-sidebar' : ''}`}
         onClick={toggleSidebar}
+        data-testid='sidebar-container'
       >
         <div className="content">
           <div className="header-group">
