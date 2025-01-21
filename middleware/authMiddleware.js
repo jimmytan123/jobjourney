@@ -3,7 +3,6 @@ import {
   UnauthorizedError,
   BadRequestError,
 } from '../errors/customErrors.js';
-import { USER_TYPE } from '../utils/constant.js';
 import { verifyJWT } from '../utils/token.js';
 
 export const authenticateUser = (req, res, next) => {
@@ -18,6 +17,7 @@ export const authenticateUser = (req, res, next) => {
     // Verify JWT to get the data
     const decodedToken = verifyJWT(token);
 
+    // Check if the jwt token user id is the Demo/Test user id
     const isTestUser = decodedToken.userId === '66ce1027dab3e724c81d9986';
 
     // Store an user object in the request object
