@@ -59,7 +59,7 @@ export const validateJobInput = withValidationErrors([
     .withMessage('Invalid job type value'),
 ]);
 
-// For ID params, checking if it is a valid mongo id type,
+// For ID params of the single job endpoint, checking if it is a valid mongo id type,
 // and the existence of a job given the id,
 // and if the people who access the resource is an admin or the creator
 // by using custom validator function https://express-validator.github.io/docs/6.0.0/validation-chain-api#customvalidator
