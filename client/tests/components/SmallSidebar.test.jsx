@@ -37,7 +37,7 @@ describe('SmallSidebar', () => {
     expect(sideBarContainer).toHaveClass('show-sidebar');
   });
 
-  it('should hide the sidebar when `showSidebar` is true', () => {
+  it('should hide the sidebar when `showSidebar` is false', () => {
     useDashboardContext.mockReturnValue({
       toggleSidebar: vi.fn(), // mock
       showSidebar: false,
@@ -56,6 +56,7 @@ describe('SmallSidebar', () => {
 
   it('should call toggleSidebar if the close button is clicked', async () => {
     const mockedToggleSidebar = vi.fn();
+    
     useDashboardContext.mockReturnValue({
       toggleSidebar: mockedToggleSidebar, // mock
       showSidebar: true,
