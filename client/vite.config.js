@@ -8,7 +8,7 @@ export default defineConfig({
     proxy: {
       // with options: http://localhost:5173/api/bar-> http://localhost:5100/api/bar
       '/api': {
-        target: 'http://localhost:5100/api',
+        target: 'http://localhost:5100/api', // the api server url
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''), // to remove the api prefix
       },
