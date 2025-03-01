@@ -2,7 +2,6 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import {
   Outlet,
   redirect,
-  useLoaderData,
   useNavigate,
   useNavigation,
 } from 'react-router-dom';
@@ -15,7 +14,7 @@ import baseFetch from '../../utils/apiService';
 import Loading from '../../components/Loading';
 import { useQuery } from '@tanstack/react-query';
 
-// Define user query
+// Define Tanstack user query
 const userQuery = {
   queryKey: ['user'],
   queryFn: async () => {

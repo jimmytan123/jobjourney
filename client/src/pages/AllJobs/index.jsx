@@ -10,7 +10,7 @@ const allJobsQuery = (queryParams) => {
   const { search, jobStatus, jobType, sort, page } = queryParams;
 
   return {
-    // Construct query key based on query params
+    // Construct Tanstack query key based on query params
     queryKey: [
       'jobs',
       search ?? '',
@@ -49,6 +49,8 @@ const AllJobsContext = createContext();
 
 const AllJobs = () => {
   const { searchValues } = useLoaderData();
+
+  // https://tanstack.com/query/latest/docs/framework/react/examples/react-router
   const { data } = useQuery(allJobsQuery(searchValues));
 
   return (

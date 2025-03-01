@@ -1,10 +1,9 @@
 import StatsContainer from '../../components/StatsContainer';
 import ChartsContainer from '../../components/ChartsContainer';
 import baseFetch from '../../utils/apiService';
-import { useLoaderData } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
-// Define query
+// Define Tanstack stats query
 const statsQuery = {
   queryKey: ['stats'],
   queryFn: async () => {

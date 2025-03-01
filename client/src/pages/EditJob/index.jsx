@@ -15,7 +15,7 @@ import { FaChevronLeft } from 'react-icons/fa6';
 import SubmitButton from '../../components/SubmitButton';
 import { useQuery } from '@tanstack/react-query';
 
-// Define job query
+// Define Tanstack job query
 const singleJobQuery = (id) => {
   return {
     queryKey: ['job', id],
