@@ -2,8 +2,6 @@ import { useAllJobsContext } from '../pages/AllJobs';
 import JobCard from './JobCard';
 import styled from 'styled-components';
 import Pagination from './Pagination';
-import UpdatedPagination from './UpdatedPagination';
-import baseFetch from '../utils/apiService';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 

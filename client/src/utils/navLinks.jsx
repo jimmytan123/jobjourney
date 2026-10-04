@@ -1,4 +1,3 @@
-import React from 'react';
 import { FaSuitcase } from 'react-icons/fa';
 import { FaUser } from 'react-icons/fa';
 import { MdAdminPanelSettings } from 'react-icons/md';

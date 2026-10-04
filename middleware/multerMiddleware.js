@@ -1,6 +1,4 @@
 import multer from 'multer';
-import DataParser from 'datauri/parser.js';
-import path from 'path';
 
 // const storage = multer.diskStorage({
 //   destination: (req, file, cb) => {
@@ -16,16 +14,9 @@ const storage = multer.memoryStorage();
 
 const upload = multer({ storage: storage });
 
-const parser = new DataParser();
-
 // The file (coming from req.file) will have a buffer
 export const formatImage = (file) => {
-  // console.log(file);
-
-  // Get the file extension name (ex: .webp)
-  const fileExtensions = path.extname(file.originalname).toString();
-
-  return parser.format(fileExtensions, file.buffer).content;
+  return `data:${file.mimetype};base64,${file.buffer.toString('base64')}`;
 };
 
 export default upload;

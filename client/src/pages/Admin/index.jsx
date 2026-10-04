@@ -10,7 +10,7 @@ export const loader = async () => {
     const { data } = await baseFetch.get('/admin/app-stats');
 
     return data;
-  } catch (err) {
+  } catch {
     toast.error('You do not have permissions to visit admin page');
 
     return redirect('/dashboard/jobs');

@@ -16,7 +16,7 @@ const statsQuery = {
 export const loader = (queryClient) => {
   return async () => {
     // https://tkdodo.eu/blog/react-query-meets-react-router#querifying-the-example
-    const data = await queryClient.fetchQuery(statsQuery);
+    await queryClient.fetchQuery(statsQuery);
 
     return null;
   };

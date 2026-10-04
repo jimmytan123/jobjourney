@@ -10,7 +10,7 @@ export const authenticateUser = (req, res, next) => {
 
   // Check existence of a cookie token, throw error immediately if no token present
   if (!token) {
-    next(new UnauthenticatedError('no token provided in the request'));
+    return next(new UnauthenticatedError('no token provided in the request'));
   }
 
   try {
