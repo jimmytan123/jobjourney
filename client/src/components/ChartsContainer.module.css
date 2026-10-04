@@ -1,0 +1,16 @@
+.wrapper {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+.wrapper .selector {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0 1rem;
+}
+
+.wrapper .selector .active {
+  background-color: var(--primary-800);
+}

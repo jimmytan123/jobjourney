@@ -1,4 +1,4 @@
-import Wrapper from '../assets/styles/styledStatsPage';
+import styles from '../assets/styles/StatsPage.module.css';
 import { MdPending } from 'react-icons/md';
 import StatCard from './StatCard';
 import { BsPeopleFill } from 'react-icons/bs';
@@ -29,11 +29,11 @@ const StatsContainer = ({ defaultStats }) => {
     },
   ];
   return (
-    <Wrapper>
+    <div className={styles.wrapper}>
       {data.map((item) => {
         return <StatCard {...item} key={item.title} />;
       })}
-    </Wrapper>
+    </div>
   );
 };
 

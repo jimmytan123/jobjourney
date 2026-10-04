@@ -9,7 +9,7 @@ import baseFetch from '../../utils/apiService';
 import { toast } from 'react-toastify';
 import FormRow from '../../components/FormRow';
 import FormRowSelect from '../../components/FormRowSelect';
-import { Wrapper } from '../../assets/styles/styledDashboardFormPage';
+import styles from '../../assets/styles/DashboardFormPage.module.css';
 import { JOB_STATUS, JOB_TYPE } from '../../utils/constant';
 import { FaChevronLeft } from 'react-icons/fa6';
 import SubmitButton from '../../components/SubmitButton';
@@ -99,15 +99,15 @@ const EditJob = () => {
   const errors = useActionData();
 
   return (
-    <Wrapper>
-      <Form method="patch" className="dashboard-form">
-        <h4 className="form-title">
-          <Link to="/dashboard/jobs" className="back-btn">
+    <div className={styles.wrapper}>
+      <Form method="patch" className={styles.dashboardForm}>
+        <h4 className={styles.formTitle}>
+          <Link to="/dashboard/jobs" className={styles.backBtn}>
             <FaChevronLeft />
           </Link>
           Edit job
         </h4>
-        <div className="form-center">
+        <div className={styles.formCenter}>
           <div>
             <FormRow type="text" name="position" defaultValue={job.position} />
             {errors?.position && (
@@ -153,7 +153,7 @@ const EditJob = () => {
           <SubmitButton formBtn text="Update" />
         </div>
       </Form>
-    </Wrapper>
+    </div>
   );
 };
 

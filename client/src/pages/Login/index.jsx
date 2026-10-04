@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 import Logo from '../../components/Logo';
 import FormRow from '../../components/FormRow';
-import Wrapper from '../../assets/styles/styledAuthPage';
+import styles from '../../assets/styles/AuthPage.module.css';
 import baseFetch from '../../utils/apiService';
 import { toast } from 'react-toastify';
 import SubmitButton from '../../components/SubmitButton';
@@ -74,7 +74,7 @@ const Login = ({ queryClient }) => {
   };
 
   return (
-    <Wrapper>
+    <div className={styles.wrapper}>
       <Form method="post" className="form">
         <Logo />
         <h4>Login</h4>
@@ -94,18 +94,18 @@ const Login = ({ queryClient }) => {
         </button>
         <p>
           Forget password?
-          <Link to="/forget-password" className="login-link">
+          <Link to="/forget-password" className={styles.loginLink}>
             Reset Password
           </Link>
         </p>
         <p>
           Not an user yet?
-          <Link to="/register" className="login-link">
+          <Link to="/register" className={styles.loginLink}>
             Register
           </Link>
         </p>
       </Form>
-    </Wrapper>
+    </div>
   );
 };
 

@@ -1,0 +1,45 @@
+/* Shared utility and child-component classes stay global within this wrapper. */
+.wrapper {
+  border-radius: var(--border-radius);
+  min-height: 100vh;
+  display: grid;
+  align-items: center;
+}
+
+.wrapper img {
+  display: block;
+  margin: 0 auto;
+  width: 7rem;
+}
+
+.wrapper h4 {
+  font-weight: 700;
+  margin: 0.5rem 0 1rem;
+  text-align: center;
+}
+
+.wrapper form {
+  border-top: 0.4rem solid var(--primary-500);
+  border-bottom: 0.4rem solid var(--primary-500);
+}
+
+.wrapper :global(.btn) {
+  margin-top: 2rem;
+}
+
+.wrapper p {
+  text-align: center;
+  line-height: 1.4;
+}
+
+.wrapper .loginLink,
+.wrapper .backhomeLink {
+  display: inline-block;
+  margin-top: 1rem;
+  color: var(--primary-500);
+  margin-left: 0.4rem;
+}
+
+.wrapper p:global(.form-input-error) {
+  text-align: left;
+}

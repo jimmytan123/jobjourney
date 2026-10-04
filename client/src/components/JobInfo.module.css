@@ -1,0 +1,21 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.wrapper .icon {
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.wrapper .icon svg {
+  color: var(--text-secondary-color);
+}
+
+.wrapper .text {
+  margin: 0;
+  color: var(--text-secondary-color);
+  text-transform: capitalize;
+}

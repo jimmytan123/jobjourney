@@ -1,0 +1,57 @@
+/* Shared utility and child-component classes stay global within this wrapper. */
+.wrapper {
+  height: 5rem;
+  margin: 2rem 0.5rem 0 0.5rem;
+  display: flex;
+  justify-content: end;
+  gap: 0.8rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.wrapper :global(.btn) {
+  border-radius: 0;
+}
+
+.wrapper :global(.btn):disabled {
+  pointer-events: none;
+  background-color: var(--primary-400);
+}
+
+.wrapper .prevBtn,
+.wrapper .nextBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  justify-content: center;
+  height: 40px;
+  width: 80px;
+  font-weight: 700;
+}
+
+.wrapper .btnContainer {
+  background-color: var(--background-secondary-color);
+  display: flex;
+  align-items: center;
+}
+
+.wrapper .pageBtn {
+  color: var(--primary-500);
+  background-color: transparent;
+  border-color: transparent;
+  width: 45px;
+  height: 40px;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.wrapper .active {
+  background-color: var(--primary-500);
+  color: var(--white);
+}
+
+.wrapper .dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

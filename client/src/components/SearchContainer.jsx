@@ -1,4 +1,4 @@
-import { Wrapper } from '../assets/styles/styledDashboardFormPage';
+import styles from '../assets/styles/DashboardFormPage.module.css';
 import FormRow from '../components/FormRow';
 import FormRowSelect from '../components/FormRowSelect';
 import { JOB_TYPE, JOB_STATUS, JOB_SORT_BY } from '../utils/constant';
@@ -28,9 +28,9 @@ const SearchContainer = () => {
   };
 
   return (
-    <Wrapper type="sm">
-      <Form className="dashboard-form">
-        <div className="form-center">
+    <div className={`${styles.wrapper} ${styles.compact}`}>
+      <Form className={styles.dashboardForm}>
+        <div className={styles.formCenter}>
           <FormRow
             type="search"
             name="search"
@@ -76,7 +76,7 @@ const SearchContainer = () => {
           </Link>
         </div>
       </Form>
-    </Wrapper>
+    </div>
   );
 };
 

@@ -1,7 +1,7 @@
 import { Link, Form, redirect, useActionData } from 'react-router-dom';
 import Logo from '../../components/Logo';
 import FormRow from '../../components/FormRow';
-import Wrapper from '../../assets/styles/styledAuthPage';
+import styles from '../../assets/styles/AuthPage.module.css';
 import baseFetch from '../../utils/apiService';
 import { toast } from 'react-toastify';
 import SubmitButton from '../../components/SubmitButton';
@@ -45,7 +45,7 @@ const ForgetPassword = () => {
   const errors = useActionData(); // To retrieve data coming back from action
 
   return (
-    <Wrapper>
+    <div className={styles.wrapper}>
       <Form method="post" className="form">
         <Logo />
         <h4>Forget Password</h4>
@@ -57,12 +57,12 @@ const ForgetPassword = () => {
         {errors?.email && <p className="form-input-error">{errors.email}</p>}
         <SubmitButton text="Email me" />
         <p>
-          <Link to="/login" className="backhome-link">
+          <Link to="/login" className={styles.backhomeLink}>
             Back to login
           </Link>
         </p>
       </Form>
-    </Wrapper>
+    </div>
   );
 };
 

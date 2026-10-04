@@ -1,5 +1,5 @@
 import { useDashboardContext } from '../DashboardLayout';
-import { Wrapper } from '../../assets/styles/styledDashboardFormPage';
+import styles from '../../assets/styles/DashboardFormPage.module.css';
 import baseFetch from '../../utils/apiService';
 import { toast } from 'react-toastify';
 import { Form, redirect, useActionData, Link } from 'react-router-dom';
@@ -55,15 +55,15 @@ const AddJob = () => {
   const errors = useActionData(); // To retrieve data coming back from action
 
   return (
-    <Wrapper>
-      <Form method="post" className="dashboard-form">
-        <h4 className="form-title">
-          <Link to="/dashboard/jobs" className="back-btn">
+    <div className={styles.wrapper}>
+      <Form method="post" className={styles.dashboardForm}>
+        <h4 className={styles.formTitle}>
+          <Link to="/dashboard/jobs" className={styles.backBtn}>
             <FaChevronLeft />
           </Link>
           Add job
         </h4>
-        <div className="form-center">
+        <div className={styles.formCenter}>
           <div>
             <FormRow type="text" name="position" />
             {errors?.position && (
@@ -106,7 +106,7 @@ const AddJob = () => {
           <SubmitButton formBtn text="Add" />
         </div>
       </Form>
-    </Wrapper>
+    </div>
   );
 };
 

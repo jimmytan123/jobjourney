@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ChartsContainer from '../../src/components/ChartsContainer';
+import styles from '../../src/components/ChartsContainer.module.css';
 
 const data = [{ date: 'Jan 24', count: 3 }, { date: 'Feb 24', count: 5 }];
 
@@ -35,6 +36,6 @@ describe('monthly application charts', () => {
     await userEvent.setup().click(screen.getByRole('button', { name: 'Area Chart' }));
     await waitFor(() => expect(container.querySelector('.recharts-area')).toBeInTheDocument());
     expect(container.querySelector('.recharts-bar')).not.toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Area Chart' })).toHaveClass('active');
+    expect(screen.getByRole('button', { name: 'Area Chart' })).toHaveClass(styles.active);
   });
 });

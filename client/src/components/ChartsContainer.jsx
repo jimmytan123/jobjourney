@@ -1,24 +1,24 @@
 import BarChart from './BarChart';
 import AreaChart from './AreaChart';
-import styled from 'styled-components';
+import styles from './ChartsContainer.module.css';
 import { useState } from 'react';
 
 const ChartsContainer = ({ data }) => {
   const [chartType, setChartType] = useState('bar');
 
   return (
-    <Wrapper>
+    <div className={styles.wrapper}>
       <h4>Monthly Applications Stats</h4>
-      <div className="selector">
+      <div className={styles.selector}>
         <button
           onClick={() => setChartType('bar')}
-          className={chartType === 'bar' ? 'active btn' : 'btn'}
+          className={`btn ${chartType === 'bar' ? styles.active : ''}`}
         >
           Bar Chart
         </button>
         <button
           onClick={() => setChartType('area')}
-          className={chartType === 'area' ? 'active btn' : 'btn'}
+          className={`btn ${chartType === 'area' ? styles.active : ''}`}
         >
           Area Chart
         </button>
@@ -28,25 +28,8 @@ const ChartsContainer = ({ data }) => {
       ) : (
         <AreaChart data={data} />
       )}
-    </Wrapper>
+    </div>
   );
 };
 
 export default ChartsContainer;
-
-const Wrapper = styled.div`
-  margin-top: 3rem;
-  text-align: center;
-
-  .selector {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    align-items: center;
-    margin: 2rem 0 1rem;
-
-    .active {
-      background-color: var(--primary-800);
-    }
-  }
-`;

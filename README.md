@@ -21,7 +21,7 @@ JobJourney is a personal full-stack project for tracking job applications. It br
 | Frontend | React 19 and React DOM; Vite 8 for development and production builds |
 | Routing and forms | React Router 7, using nested routes, loaders, actions, and `<Form>` |
 | Server state | TanStack Query 5 for caching, fetching, and invalidating API data |
-| UI | styled-components 6, CSS, React Icons, React Toastify 11, and Recharts 3 |
+| UI | CSS Modules, global CSS, React Icons, React Toastify 11, and Recharts 3 |
 | HTTP and dates | Axios and Day.js |
 | Backend | Node.js, Express 4, and ES modules |
 | Database | MongoDB (local or Atlas) and Mongoose 9 |
@@ -119,7 +119,7 @@ client/
   src/App.jsx          Browser routes and shared query client
   src/pages/           Pages, loaders, actions, and dashboard context
   src/components/      Forms, navigation, job cards, pagination, and charts
-  src/assets/          SVG images and shared styled-components
+  src/assets/          SVG images and shared CSS Modules
   src/utils/           Axios client, theme helpers, and UI constants
   tests/               Component tests
   vite.config.js       React plugin and development API proxy
