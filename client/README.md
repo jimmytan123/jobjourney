@@ -1,6 +1,6 @@
 # JobJourney frontend
 
-This directory contains the React frontend for JobJourney. See the [project README](../README.md) for features, architecture, environment variables, database setup, and deployment.
+This directory contains the React and TypeScript frontend for JobJourney. See the [project README](../README.md) for features, architecture, environment variables, database setup, and deployment.
 
 Use Node.js 24 LTS (see `../.nvmrc`). From the project root, `npm run setup-project` installs both packages and `npm run dev` starts the API and frontend together.
 
@@ -9,8 +9,9 @@ If working from this directory:
 ```bash
 npm ci
 npm run dev       # http://localhost:5173; start the API separately from the root
-npm run build     # writes dist/
+npm run build     # type-checks, then writes dist/
 npm run lint
+npm run typecheck # checks source and typed tests
 npm run test:run   # one run
 npm test          # watch mode
 npm run test:ui   # interactive test UI
@@ -18,8 +19,10 @@ npm run test:ui   # interactive test UI
 
 `vite.config.js` proxies `/api` to the backend port configured in the root `.env` (default `5100`). The Axios client uses `/api/v1`. Server credentials belong in the root environment file; they must not be placed in `VITE_` variables.
 
-Routes, loaders, and actions live in `src/App.jsx` and `src/pages/`. TanStack Query manages cached API data, CSS Modules and global CSS style the UI, and Recharts renders application statistics. Tests use Vitest, jsdom, and React Testing Library.
+Routes, loaders, and actions live in `src/App.tsx` and `src/pages/`. TanStack Query manages cached API data, CSS Modules and global CSS style the UI, and Recharts renders application statistics. Tests use Vitest, jsdom, and React Testing Library.
 
 Component styles live in colocated `*.module.css` files; shared auth, dashboard-form, and stats layouts live in `src/assets/styles/`. Import a module as `styles` and use its class names in JSX. `src/index.css` holds the reset, shared utilities, and light/dark theme variables. Stat-card colors use CSS custom properties, and the search form uses a compact modifier class. Scoped `:global(...)` selectors let layouts style shared child-component hooks.
+
+Frontend source uses `.ts` and `.tsx`. `src/types.ts` describes API responses and shared domain types; component props and route handlers are typed where they are defined. `tsconfig.json` enables strict checking, including unchecked indexed access. API types describe the server contract; server-side validation still handles incoming data. Vite, Vitest, and ESLint configuration files remain JavaScript.
 
 `npm run preview` previews the static build only. To serve the built frontend with its API, run `npm start` from the project root after building.

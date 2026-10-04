@@ -18,7 +18,7 @@ JobJourney is a personal full-stack project for tracking job applications. It br
 
 | Area | Libraries and purpose |
 | --- | --- |
-| Frontend | React 19 and React DOM; Vite 8 for development and production builds |
+| Frontend | React 19 and React DOM; TypeScript 6; Vite 8 for development and production builds |
 | Routing and forms | React Router 7, using nested routes, loaders, actions, and `<Form>` |
 | Server state | TanStack Query 5 for caching, fetching, and invalidating API data |
 | UI | CSS Modules, global CSS, React Icons, React Toastify 11, and Recharts 3 |
@@ -116,12 +116,12 @@ errors/                Custom HTTP error classes
 utils/                 JWT/password helpers, constants, and sample data
 tests/                Backend smoke tests (mocked database calls)
 client/
-  src/App.jsx          Browser routes and shared query client
+  src/App.tsx          Browser routes and shared query client
   src/pages/           Pages, loaders, actions, and dashboard context
   src/components/      Forms, navigation, job cards, pagination, and charts
   src/assets/          SVG images and shared CSS Modules
   src/utils/           Axios client, theme helpers, and UI constants
-  tests/               Component tests
+  tests/               Typed component and route tests
   vite.config.js       React plugin and development API proxy
   vitest.config.js     jsdom test environment and setup
 .env.example           Environment template without credentials
@@ -159,13 +159,14 @@ Run from the repository root unless specified otherwise:
 | `npm run server` / `npm run client` | Run either development process separately |
 | `npm run build-client` | Build the frontend into `client/dist` |
 | `npm run lint` | Lint frontend source, tests, and configuration |
+| `npm run typecheck` | Check frontend and component-test types without emitting files |
 | `npm test` | Run backend smoke tests, then frontend component tests once |
 | `npm run test --prefix client` | Run frontend tests in watch mode |
 | `npm run test:ui --prefix client` | Open the Vitest UI |
 | `npm run setup-production` | Install both packages including build tools, then build the frontend |
 | `npm start` | Run the API and serve the built frontend |
 
-Backend tests use temporary localhost servers and mocked database methods; they do not require MongoDB, Cloudinary, or Resend credentials. Frontend tests cover form fields, navigation, sidebars, chart switching, and isolation of the backend environment from Vite. Live database and external-service behavior still needs manual verification with your own development accounts.
+Backend tests use temporary localhost servers and mocked database methods; they do not require MongoDB, Cloudinary, or Resend credentials. Frontend tests cover form fields, navigation, sidebars, chart switching, search reset, route validation and errors, and isolation of the backend environment from Vite. Live database and external-service behavior still needs manual verification with your own development accounts.
 
 To inspect dependency advisories:
 
