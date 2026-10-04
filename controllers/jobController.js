@@ -126,7 +126,7 @@ export const updateJob = async (req, res, next) => {
     const updatedJob = await Job.findByIdAndUpdate(
       id,
       req.body,
-      { new: true } // Then will return the job after the update was applied
+      { returnDocument: 'after' } // Return the job after the update was applied
     );
 
     if (!updatedJob) {

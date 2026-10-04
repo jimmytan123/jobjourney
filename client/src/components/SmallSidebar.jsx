@@ -1,4 +1,3 @@
-import React from 'react';
 import { useDashboardContext } from '../pages/DashboardLayout';
 import styled from 'styled-components';
 import { IoClose } from 'react-icons/io5';

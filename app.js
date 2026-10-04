@@ -1,0 +1,86 @@
+import 'dotenv/config';
+import express from 'express';
+import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
+import { StatusCodes } from 'http-status-codes';
+import { v2 as cloudinary } from 'cloudinary';
+import helmet from 'helmet';
+import mongoSanitize from 'express-mongo-sanitize';
+
+// Import middlewares
+import { authenticateUser } from './middleware/authMiddleware.js';
+import { customErrorHandler } from './middleware/errorMiddleware.js';
+
+// Import routers
+import jobRouter from './routes/jobRouter.js';
+import authRouter from './routes/authRouter.js';
+import userRouter from './routes/userRouter.js';
+import adminRouter from './routes/adminRouter.js';
+
+// Public
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+import path from 'path';
+
+const app = express();
+
+/* CONFIGS */
+
+// Logger configs
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev')); //HTTP request logger middleware
+}
+
+// Resolve the built frontend relative to this module.
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// Parser configs
+app.use(express.json());
+app.use(cookieParser());
+
+// Cloudinary configs
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// Security configs
+app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    useDefaults: true,
+    directives: {
+      'img-src': ["'self'", 'https: data:'],
+    },
+  })
+);
+app.use(mongoSanitize());
+
+// API routes
+app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/jobs', authenticateUser, jobRouter);
+app.use('/api/v1/users', authenticateUser, userRouter);
+app.use('/api/v1/admin', authenticateUser, adminRouter);
+
+// Keep unknown API routes separate from the SPA fallback.
+app.use('/api', (req, res) => {
+  res.status(StatusCodes.NOT_FOUND).json({ message: 'Not found' });
+});
+
+app.use(express.static(path.resolve(__dirname, './client/dist')));
+
+// Set up path for Front-end entry point
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, './client/dist', 'index.html'));
+});
+
+// NOT FOUND Route
+app.use('*', (req, res) => {
+  res.status(StatusCodes.NOT_FOUND).json({ message: 'Not found' });
+});
+
+// Custom Error Handler Route
+app.use(customErrorHandler);
+
+export default app;

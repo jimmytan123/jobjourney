@@ -10,8 +10,8 @@ const SearchContainer = () => {
   const { searchValues } = useAllJobsContext();
   const { search, jobStatus, jobType, sort } = searchValues;
 
-  const submit = useSubmit(); // For submitting form onChange
-
+  // For submitting form onChange. Sends a request as if a form was submitted. React Router internally updates the URL search params.
+  const submit = useSubmit();
   const debounce = (onChange) => {
     let timeoutId;
 

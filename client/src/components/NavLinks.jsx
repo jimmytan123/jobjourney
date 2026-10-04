@@ -1,4 +1,3 @@
-import React from 'react';
 import links from '../utils/navLinks';
 import { NavLink } from 'react-router-dom'; //https://reactrouter.com/en/main/components/nav-link
 import { useDashboardContext } from '../pages/DashboardLayout';

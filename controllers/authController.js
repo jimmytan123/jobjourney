@@ -1,6 +1,4 @@
-import dotenv from 'dotenv';
-dotenv.config({ path: './.env' });
-import crypto from 'crypto';
+import crypto from 'node:crypto';
 import User from '../models/User.js';
 import { StatusCodes } from 'http-status-codes';
 import { getHashedPassword, isPasswordMatched } from '../utils/password.js';
@@ -12,7 +10,9 @@ import { createJWT } from '../utils/token.js';
 import { NotFoundError } from '../errors/customErrors.js';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = process.env.RESEND_API_KEY
+  ? new Resend(process.env.RESEND_API_KEY)
+  : null;
 /**
  * @desc REGISTER
  * @method POST
@@ -100,10 +100,14 @@ export const logout = (req, res, next) => {
  * @access PUBLIC
  */
 export const reset = async (req, res, next) => {
+  if (!resend) {
+    return next(new BadRequestError('Password reset email is not configured'));
+  }
+
   // Generate a reset token
   crypto.randomBytes(32, async (error, buffer) => {
     if (error) {
-      next(err);
+      return next(error);
     }
 
     // Generate a password reset token
@@ -124,7 +128,7 @@ export const reset = async (req, res, next) => {
       const resetLink = `${process.env.BASE_URL}/reset/${token}`;
 
       // Send email with a reset link
-      await resend.emails.send({
+      const { error: emailError } = await resend.emails.send({
         from: `Support <${process.env.SENDER_EMAIL}>`,
         to: req.body.email,
         subject: 'Reset Your Password - Job Journey',
@@ -137,6 +141,10 @@ export const reset = async (req, res, next) => {
         <p>If you didn't request a password reset, please ensure your account's security.</p>
         `,
       });
+
+      if (emailError) {
+        throw new Error(emailError.message);
+      }
 
       res.status(StatusCodes.OK).json({ message: 'Reset email sent' });
     } catch (err) {

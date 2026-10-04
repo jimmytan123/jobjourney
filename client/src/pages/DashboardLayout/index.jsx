@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import {
   Outlet,
   redirect,
@@ -47,7 +47,7 @@ export const loader = (queryClient) => {
 const DashboardContext = createContext();
 
 // Layout component for nav, sidebar, body content and shared states
-const DashboardLayout = ({ queryClient }) => {
+const DashboardLayout = () => {
   const { data } = useQuery(userQuery);
   const user = data.user;
 
@@ -56,8 +56,6 @@ const DashboardLayout = ({ queryClient }) => {
 
   const [showSidebar, setShowSidebar] = useState(false);
   const [isDarkTheme, setIsDarkTheme] = useState(checkAndSetDefaultTheme());
-
-  const [isAuthError, setIsAuthError] = useState(false);
 
   const toggleDarkTheme = () => {
     // Update theme setting
@@ -75,7 +73,7 @@ const DashboardLayout = ({ queryClient }) => {
     setShowSidebar((showSidebar) => !showSidebar);
   };
 
-  const logoutUser = async () => {
+  const logoutUser = useCallback(async () => {
     try {
       // Make api request to destroy jwt cookie
       await baseFetch.get('/auth/logout');
@@ -87,28 +85,22 @@ const DashboardLayout = ({ queryClient }) => {
     } catch (err) {
       console.log(err);
     }
-  };
+  }, [navigate]);
 
   // Add api call response interceptor for detecting auth user error
-  baseFetch.interceptors.response.use(
-    (res) => {
-      return res;
-    },
-    (err) => {
-      if (err?.response?.status === 401) {
-        setIsAuthError(true);
-      }
-
-      return Promise.reject(err);
-    }
-  );
-
   useEffect(() => {
-    if (!isAuthError) return;
+    const interceptor = baseFetch.interceptors.response.use(
+      (res) => res,
+      (err) => {
+        if (err?.response?.status === 401) {
+          navigate('/login');
+        }
+        return Promise.reject(err);
+      }
+    );
 
-    // Log user out if there is 401 auth error
-    logoutUser();
-  }, [isAuthError]);
+    return () => baseFetch.interceptors.response.eject(interceptor);
+  }, [navigate]);
 
   return (
     <DashboardContext.Provider
