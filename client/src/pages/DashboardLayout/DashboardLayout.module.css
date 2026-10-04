@@ -1,0 +1,20 @@
+.wrapper .dashboard {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.wrapper .dashboardContent {
+  width: 90vw;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+@media (min-width: 1024px) {
+  .wrapper .dashboard {
+    grid-template-columns: auto 1fr;
+  }
+
+  .wrapper .dashboardContent {
+    width: 90%;
+  }
+}

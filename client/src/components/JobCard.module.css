@@ -1,0 +1,102 @@
+.wrapper {
+  background-color: var(--background-secondary-color);
+  padding: 2rem 0.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-2);
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+.wrapper .header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--grey-100);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 1rem;
+}
+
+.wrapper .mainIcon {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  font-weight: 700;
+  background-color: var(--primary-500);
+  color: var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+}
+
+.wrapper .headerContent p {
+  text-transform: capitalize;
+  margin: 0;
+  letter-spacing: var(--letter-spacing);
+  color: var(--text-secondary-color);
+}
+
+.wrapper .headerContent .headerHeadingWrapper {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.wrapper .headerContent .headerHeadingWrapper h5 {
+  font-size: 1rem;
+}
+
+.wrapper .headerContent .headerHeadingWrapper .jobLink {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper .headerContent .headerHeadingWrapper .jobLink svg {
+  fill: var(--primary-700);
+}
+
+.wrapper .content {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0 1.5rem;
+  gap: 1.5rem;
+  padding: 1rem 1.5rem;
+}
+
+.wrapper .content .contentCenter {
+  display: grid;
+  row-gap: 0.5rem;
+}
+
+.wrapper .content .contentCenter .status {
+  width: 100px;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  border-radius: var(--border-radius);
+  text-transform: capitalize;
+  text-align: center;
+}
+
+.wrapper .content .actions {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 1rem;
+}
+
+.wrapper .content .actions .editBtn,
+.wrapper .content .actions .deleteBtn {
+  font-size: 0.8rem;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .wrapper .content .contentCenter {
+    grid-template-columns: 1fr 1fr;
+  }
+}

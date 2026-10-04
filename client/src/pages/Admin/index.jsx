@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import baseFetch from '../../utils/apiService';
 import { FaUserCircle, FaSuitcase } from 'react-icons/fa';
 import StatCard from '../../components/StatCard';
-import Wrapper from '../../assets/styles/styledStatsPage';
+import styles from '../../assets/styles/StatsPage.module.css';
 
 export const loader = async () => {
   try {
@@ -25,7 +25,7 @@ const Admin = () => {
       <h4 className="title" style={{ marginBottom: '2rem', textAlign: 'left' }}>
         Weclome Admin user
       </h4>
-      <Wrapper>
+      <div className={styles.wrapper}>
         <StatCard
           title="Total Users"
           count={usersCount}
@@ -40,7 +40,7 @@ const Admin = () => {
           bgColor="#95d5b2"
           icon={<FaSuitcase />}
         />
-      </Wrapper>
+      </div>
     </>
   );
 };

@@ -18,6 +18,8 @@ npm run test:ui   # interactive test UI
 
 `vite.config.js` proxies `/api` to the backend port configured in the root `.env` (default `5100`). The Axios client uses `/api/v1`. Server credentials belong in the root environment file; they must not be placed in `VITE_` variables.
 
-Routes, loaders, and actions live in `src/App.jsx` and `src/pages/`. TanStack Query manages cached API data, styled-components and CSS style the UI, and Recharts renders application statistics. Tests use Vitest, jsdom, and React Testing Library.
+Routes, loaders, and actions live in `src/App.jsx` and `src/pages/`. TanStack Query manages cached API data, CSS Modules and global CSS style the UI, and Recharts renders application statistics. Tests use Vitest, jsdom, and React Testing Library.
+
+Component styles live in colocated `*.module.css` files; shared auth, dashboard-form, and stats layouts live in `src/assets/styles/`. Import a module as `styles` and use its class names in JSX. `src/index.css` holds the reset, shared utilities, and light/dark theme variables. Stat-card colors use CSS custom properties, and the search form uses a compact modifier class. Scoped `:global(...)` selectors let layouts style shared child-component hooks.
 
 `npm run preview` previews the static build only. To serve the built frontend with its API, run `npm start` from the project root after building.

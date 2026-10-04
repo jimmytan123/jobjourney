@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import SmallSidebar from '../../src/components/SmallSidebar';
+import styles from '../../src/components/SmallSidebar.module.css';
 
 //Mock the useDashboardContext hook
 vi.mock('../../src/pages/DashboardLayout', () => ({
@@ -32,7 +33,7 @@ describe('SmallSidebar', () => {
     );
 
     const sideBarContainer = screen.getByTestId('sidebar-container');
-    expect(sideBarContainer).toHaveClass('show-sidebar');
+    expect(sideBarContainer).toHaveClass(styles.showSidebar);
   });
 
   it('should hide the sidebar when `showSidebar` is false', () => {
@@ -49,7 +50,7 @@ describe('SmallSidebar', () => {
     );
 
     const sideBarContainer = screen.getByTestId('sidebar-container');
-    expect(sideBarContainer).not.toHaveClass('show-sidebar');
+    expect(sideBarContainer).not.toHaveClass(styles.showSidebar);
   });
 
   it('should call toggleSidebar if the close button is clicked', async () => {
@@ -89,9 +90,7 @@ describe('SmallSidebar', () => {
       </MemoryRouter>
     );
 
-    const sidebarContainer = screen
-      .getByText(/all jobs/i)
-      .closest('.sidebar-container');
+    const sidebarContainer = screen.getByTestId('sidebar-container');
       
     const user = userEvent.setup();
     await user.click(sidebarContainer);

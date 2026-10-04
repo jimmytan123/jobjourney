@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styles from './Pagination.module.css';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -24,20 +24,20 @@ const Pagination = ({ numOfPages, currentPage }) => {
   };
 
   return (
-    <Wrapper>
+    <div className={styles.wrapper}>
       <button
-        className="btn prev-btn"
+        className={`btn ${styles.prevBtn}`}
         onClick={() => handlePageNumClick(currentPage - 1)}
         disabled={currentPage === 1}
       >
         <FaAngleLeft /> Prev
       </button>
-      <div className="btn-container">
+      <div className={styles.btnContainer}>
         {pageArr.map((pageNum) => {
           return (
             <button
               key={pageNum}
-              className={`btn page-btn ${pageNum === currentPage && 'active'}`}
+              className={`btn ${styles.pageBtn} ${pageNum === currentPage ? styles.active : ''}`}
               onClick={() => handlePageNumClick(pageNum)}
             >
               {pageNum}
@@ -46,65 +46,14 @@ const Pagination = ({ numOfPages, currentPage }) => {
         })}
       </div>
       <button
-        className="btn next-btn"
+        className={`btn ${styles.nextBtn}`}
         onClick={() => handlePageNumClick(currentPage + 1)}
         disabled={currentPage === numOfPages}
       >
         Next <FaAngleRight />
       </button>
-    </Wrapper>
+    </div>
   );
 };
 
 export default Pagination;
-
-const Wrapper = styled.div`
-  height: 5rem;
-  margin: 2rem 0.5rem 0 0.5rem;
-  display: flex;
-  justify-content: end;
-  gap: 0.8rem;
-  align-items: center;
-  flex-wrap: wrap;
-
-  .btn {
-    border-radius: 0;
-  }
-
-  .btn:disabled {
-    pointer-events: none;
-    background-color: var(--primary-400);
-  }
-
-  .prev-btn,
-  .next-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-    justify-content: center;
-    height: 40px;
-    width: 80px;
-    font-weight: 700;
-  }
-
-  .btn-container {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-
-  .page-btn {
-    color: var(--primary-500);
-    border-color: transparent;
-    width: 45px;
-    height: 40px;
-    font-weight: 700;
-    font-size: 1.25rem;
-    background-color: var(--background-secondary-color);
-  }
-
-  .active {
-    background-color: var(--primary-500);
-    color: var(--white);
-  }
-`;

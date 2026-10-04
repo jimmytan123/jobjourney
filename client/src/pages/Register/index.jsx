@@ -1,6 +1,6 @@
 import { Link, Form, redirect, useActionData } from 'react-router-dom';
 import Logo from '../../components/Logo';
-import Wrapper from '../../assets/styles/styledAuthPage';
+import styles from '../../assets/styles/AuthPage.module.css';
 import FormRow from '../../components/FormRow';
 import baseFetch from '../../utils/apiService';
 import { toast } from 'react-toastify';
@@ -59,7 +59,7 @@ const Register = () => {
   // console.log(errors);
 
   return (
-    <Wrapper>
+    <div className={styles.wrapper}>
       <Form method="post" className="form">
         <Logo />
         <h4>Register</h4>
@@ -92,12 +92,12 @@ const Register = () => {
         <SubmitButton text="Register Now" />
         <p>
           Already an user?
-          <Link to="/login" className="login-link">
+          <Link to="/login" className={styles.loginLink}>
             Login
           </Link>
         </p>
       </Form>
-    </Wrapper>
+    </div>
   );
 };
 

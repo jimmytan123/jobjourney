@@ -1,0 +1,68 @@
+/* Shared utility and child-component classes stay global within this wrapper. */
+.wrapper nav {
+  width: var(--fluid-width);
+  max-width: var(--max-width);
+  margin: 0 auto;
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+}
+
+.wrapper .page {
+  min-height: calc(100vh - var(--nav-height));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.wrapper .info {
+  margin-top: -3rem;
+}
+
+.wrapper .mainImg {
+  display: none;
+}
+
+.wrapper h1 {
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.wrapper h1 span {
+  color: var(--primary-500);
+}
+
+.wrapper p {
+  line-height: 1.4;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  max-width: 35em;
+}
+
+.wrapper .registerLink {
+  margin-right: 1rem;
+}
+
+.wrapper :global(.btn) {
+  padding: 0.7rem 1rem;
+}
+
+@media (min-width: 1024px) {
+  .wrapper .page {
+    flex-direction: row;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .wrapper .info {
+    margin-top: 0;
+  }
+
+  .wrapper .mainImg {
+    display: block;
+    width: 450px;
+    height: auto;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+  }
+}

@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import FormRow from '../../components/FormRow';
 import baseFetch from '../../utils/apiService';
 import { useDashboardContext } from '../DashboardLayout';
-import { Wrapper } from '../../assets/styles/styledDashboardFormPage';
+import styles from '../../assets/styles/DashboardFormPage.module.css';
 import { FaChevronLeft } from 'react-icons/fa6';
 import SubmitButton from '../../components/SubmitButton';
 
@@ -57,19 +57,19 @@ const Profile = () => {
   const errors = useActionData();
 
   return (
-    <Wrapper>
+    <div className={styles.wrapper}>
       <Form
         method="post"
-        className="dashboard-form"
+        className={styles.dashboardForm}
         encType="multipart/form-data" // necessary
       >
-        <h4 className="form-title">
-          <Link to="/dashboard/jobs" className="back-btn">
+        <h4 className={styles.formTitle}>
+          <Link to="/dashboard/jobs" className={styles.backBtn}>
             <FaChevronLeft />
           </Link>
           Update User Profile
         </h4>
-        <div className="form-center">
+        <div className={styles.formCenter}>
           <div>
             <div className="form-row">
               <label htmlFor="avatar" className="form-label">
@@ -119,7 +119,7 @@ const Profile = () => {
           <SubmitButton formBtn text="Update" />
         </div>
       </Form>
-    </Wrapper>
+    </div>
   );
 };
 

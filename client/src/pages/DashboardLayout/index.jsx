@@ -8,7 +8,7 @@ import {
 import SmallSidebar from '../../components/SmallSidebar';
 import LargeSidebar from '../../components/LargeSidebar';
 import Navbar from '../../components/Navbar';
-import { Wrapper } from './styled';
+import styles from './DashboardLayout.module.css';
 import { checkAndSetDefaultTheme } from '../../utils/checkTheme';
 import baseFetch from '../../utils/apiService';
 import Loading from '../../components/Loading';
@@ -113,18 +113,18 @@ const DashboardLayout = () => {
         logoutUser,
       }}
     >
-      <Wrapper>
-        <main className="dashboard">
+      <div className={styles.wrapper}>
+        <main className={styles.dashboard}>
           <SmallSidebar />
           <LargeSidebar />
           <div>
             <Navbar />
-            <div className="dashboard-content">
+            <div className={styles.dashboardContent}>
               {navigation.state === 'loading' ? <Loading /> : <Outlet />}
             </div>
           </div>
         </main>
-      </Wrapper>
+      </div>
     </DashboardContext.Provider>
   );
 };

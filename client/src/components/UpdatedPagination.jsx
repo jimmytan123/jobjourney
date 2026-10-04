@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styles from './UpdatedPagination.module.css';
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -17,7 +17,7 @@ const UpdatedPagination = ({ numOfPages, currentPage }) => {
     return (
       <button
         key={pageNumber}
-        className={`btn page-btn ${activeClass && 'active'}`}
+        className={`btn ${styles.pageBtn} ${activeClass ? styles.active : ''}`}
         onClick={() => handlePageNumClick(pageNumber)}
       >
         {pageNumber}
@@ -37,7 +37,7 @@ const UpdatedPagination = ({ numOfPages, currentPage }) => {
     // Dots
     if (currentPage > 3) {
       pageButtons.push(
-        <span className="page-btn dots" key="dots-prev">
+        <span className={`${styles.pageBtn} ${styles.dots}`} key="dots-prev">
           ...
         </span>
       );
@@ -67,7 +67,7 @@ const UpdatedPagination = ({ numOfPages, currentPage }) => {
     // Dots
     if (currentPage + 2 < numOfPages) {
       pageButtons.push(
-        <span className="page-btn dots" key="dots-after">
+        <span className={`${styles.pageBtn} ${styles.dots}`} key="dots-after">
           ...
         </span>
       );
@@ -98,81 +98,24 @@ const UpdatedPagination = ({ numOfPages, currentPage }) => {
   };
 
   return (
-    <Wrapper>
+    <div className={styles.wrapper}>
       <button
-        className="btn prev-btn"
+        className={`btn ${styles.prevBtn}`}
         onClick={() => handlePageNumClick(currentPage - 1)}
         disabled={currentPage === 1}
       >
         <FaAngleLeft /> Prev
       </button>
-      <div className="btn-container">{renderPageButtons()}</div>
+      <div className={styles.btnContainer}>{renderPageButtons()}</div>
       <button
-        className="btn next-btn"
+        className={`btn ${styles.nextBtn}`}
         onClick={() => handlePageNumClick(currentPage + 1)}
         disabled={currentPage === numOfPages}
       >
         Next <FaAngleRight />
       </button>
-    </Wrapper>
+    </div>
   );
 };
 
 export default UpdatedPagination;
-
-const Wrapper = styled.div`
-  height: 5rem;
-  margin: 2rem 0.5rem 0 0.5rem;
-  display: flex;
-  justify-content: end;
-  gap: 0.8rem;
-  align-items: center;
-  flex-wrap: wrap;
-
-  .btn {
-    border-radius: 0;
-  }
-
-  .btn:disabled {
-    pointer-events: none;
-    background-color: var(--primary-400);
-  }
-
-  .prev-btn,
-  .next-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-    justify-content: center;
-    height: 40px;
-    width: 80px;
-    font-weight: 700;
-  }
-
-  .btn-container {
-    background-color: var(--background-secondary-color);
-    display: flex;
-    align-items: center;
-  }
-
-  .page-btn {
-    color: var(--primary-500);
-    background-color: transparent;
-    border-color: transparent;
-    width: 45px;
-    height: 40px;
-    font-weight: 700;
-    font-size: 1.25rem;
-  }
-
-  .active {
-    background-color: var(--primary-500);
-    color: var(--white);
-  }
-
-  .dots {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-`;

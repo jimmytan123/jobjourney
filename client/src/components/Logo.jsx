@@ -1,14 +1,8 @@
 import logo from '../assets/images/logo.svg';
-import styled from 'styled-components';
+import styles from './Logo.module.css';
 
 const Logo = () => {
-  return <StyledImg src={logo} alt="JobJourney" className="logo" />;
+  return <img src={logo} alt="JobJourney" className={`logo ${styles.logo}`} />;
 };
 
 export default Logo;
-
-const StyledImg = styled.img`
-  width: 6rem;
-  max-height: 100%;
-  object-fit: contain;
-`;

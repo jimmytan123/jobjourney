@@ -1,6 +1,6 @@
 import { useAllJobsContext } from '../pages/AllJobs';
 import JobCard from './JobCard';
-import styled from 'styled-components';
+import styles from './JobsContainer.module.css';
 import Pagination from './Pagination';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -11,9 +11,9 @@ const JobsContainer = () => {
 
   if (jobs.length === 0) {
     return (
-      <Wrapper>
+      <div className={styles.wrapper}>
         <h2>No jobs. Please add job first.</h2>
-      </Wrapper>
+      </div>
     );
   }
 
@@ -43,8 +43,8 @@ const JobsContainer = () => {
   };
 
   return (
-    <Wrapper>
-      <div className="heading">
+    <div className={styles.wrapper}>
+      <div className={styles.heading}>
         <h5>
           {totalJobs} {jobs.length > 1 ? 'jobs' : 'job'} found
         </h5>
@@ -52,7 +52,7 @@ const JobsContainer = () => {
           Export All Jobs
         </button>
       </div>
-      <div className="jobs-list">
+      <div className={styles.jobsList}>
         {jobs.map((job) => {
           return <JobCard key={job._id} {...job} />;
         })}
@@ -60,36 +60,8 @@ const JobsContainer = () => {
       {numOfPages > 1 && (
         <Pagination numOfPages={numOfPages} currentPage={currentPage} />
       )}
-    </Wrapper>
+    </div>
   );
 };
 
 export default JobsContainer;
-
-const Wrapper = styled.div`
-  margin-top: 3rem;
-
-  .heading {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-  }
-
-  .heading h5 {
-    font-weight: 700;
-  }
-
-  .jobs-list {
-    display: grid;
-    grid-template-columns: 1fr;
-    row-gap: 1.5rem;
-  }
-
-  @media (min-width: 1024px) {
-    .jobs-list {
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-    }
-  }
-`;
