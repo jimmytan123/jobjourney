@@ -161,6 +161,9 @@ Run from the repository root unless specified otherwise:
 | `npm run lint` | Lint frontend source, tests, and configuration |
 | `npm run typecheck` | Check frontend and component-test types without emitting files |
 | `npm test` | Run backend smoke tests, then frontend component tests once |
+| `npm run test:e2e` | Build the frontend and run the Chromium browser smoke test |
+| `npm run test:e2e:ui` | Open Playwright's interactive test runner |
+| `npm run test:e2e:report` | Open the most recent Playwright HTML report |
 | `npm run test --prefix client` | Run frontend tests in watch mode |
 | `npm run test:ui --prefix client` | Open the Vitest UI |
 | `npm run setup-production` | Install both packages including build tools, then build the frontend |
@@ -174,6 +177,72 @@ To inspect dependency advisories:
 npm audit
 npm audit --prefix client
 ```
+
+## End-to-end pipeline
+
+The first Playwright test lives in `e2e/smoke.spec.js`. It checks the landing page,
+navigates to the login form, and reloads `/login` to verify nested-route serving.
+It does not log in, create accounts, or change data. Add future browser tests to
+`e2e/`; they are separate from the existing `npm test` suite.
+
+### Run locally
+
+Use Node.js 24, install both packages with `npm run setup-project`, then:
+
+```bash
+npx playwright install chromium
+npm run test:e2e
+```
+
+Playwright builds the frontend and starts Vite preview at `http://127.0.0.1:4173`.
+It stops the server afterward. Port 4173 must be available. This first check tests
+the production frontend bundle, without starting Express or requiring MongoDB.
+To run the same test against an existing Render preview instead:
+
+```bash
+PLAYWRIGHT_BASE_URL=https://YOUR-PREVIEW.onrender.com npm run test:e2e
+```
+
+Setting `PLAYWRIGHT_BASE_URL` skips the local build and server. When adding tests
+that need authentication or API mutations, provision an isolated test database
+and run the backend as part of CI as well.
+
+### GitHub Actions and Render
+
+- **`Playwright E2E`** (`.github/workflows/playwright.yml`) runs when a PR is opened,
+  reopened, or updated, and supports manual runs. It tests GitHub's PR merge
+  checkout with a fresh frontend build, so it does not wait for Render or need
+  any secrets. To require it before merging, add **`E2E smoke (Chromium)`** as a
+  required status check in the repository's branch rules after its first run.
+- **`Playwright Render preview`** (`.github/workflows/playwright-render.yml`) listens
+  for successful GitHub deployment statuses. It accepts this app's Render preview
+  URLs, excludes the production URL, checks out the deployed SHA, waits up to two
+  minutes for the app to wake up, and runs the same test against the live preview.
+  Keep this supplementary check optional: skipped or failed preview deployments
+  do not run browser tests. Ensure the workflow is merged into `master` for ongoing
+  use; the first real preview event still needs verification in GitHub Actions.
+- Both workflows use Node.js from `.nvmrc`, Chromium, one CI worker, and one retry.
+  Reports, failure screenshots, and traces are uploaded as Actions artifacts with
+  seven-day retention. Download the report artifact and open its `index.html`, or
+  run `npx playwright show-report PATH_TO_REPORT_DIRECTORY`.
+
+The Render setup inspected on October 17, 2026 uses a Free Node web service named
+`job-journey`, deploys `master`, builds with `npm run setup-production`, and starts
+with `node server`. Automatic PR previews are already enabled. Render creates a
+preview for PRs targeting `master`, updates it on pushes, and removes it when the
+PR closes or merges. No Render API key or deploy hook is required by these workflows.
+
+[Free web services support service previews](https://render.com/docs/free).
+Preview instances share the workspace's 750 monthly Free instance hours, build
+minutes, and bandwidth allowances; idle services sleep after 15 minutes.
+[Multi-service Preview Environments](https://render.com/docs/preview-environments)
+are a separate feature that requires Pro or higher.
+
+[Service previews copy the base service's environment variables](https://render.com/docs/service-previews),
+including its database connection. Before expanding to tests that write data,
+configure a separate test database and test credentials for previews. The current
+smoke test only visits public pages. These workflows report test results; they do
+not change Render's production auto-deploy settings or enable branch protection.
 
 ## Production setup
 

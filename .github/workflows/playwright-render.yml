@@ -1,0 +1,95 @@
+name: Playwright Render preview
+
+on:
+  deployment_status:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: playwright-render-${{ github.event.deployment.id }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    name: Render preview smoke (Chromium)
+    if: github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Resolve Render preview URL
+        id: preview
+        # Read event data as data, never interpolate a deployment URL into shell code.
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const event = JSON.parse(fs.readFileSync(process.env.GITHUB_EVENT_PATH, 'utf8'));
+          const status = event.deployment_status;
+          const candidates = [status.environment_url, status.target_url];
+          const url = candidates.flatMap(value => {
+            try { return [new URL(value)]; } catch { return []; }
+          }).find(url =>
+            url.protocol === 'https:' &&
+            url.hostname.endsWith('.onrender.com') &&
+            url.hostname.startsWith('job-journey-') &&
+            url.hostname !== 'job-journey-5vos.onrender.com' &&
+            !url.username && !url.password && !url.port
+          );
+          if (url && !event.deployment.production_environment) {
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, `url=${url.origin}\n`);
+          } else {
+            console.log('Skipping: this is not a JobJourney Render preview URL.');
+          }
+          NODE
+      - uses: actions/checkout@v6
+        if: steps.preview.outputs.url != ''
+        with:
+          ref: ${{ github.event.deployment.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        if: steps.preview.outputs.url != ''
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - name: Install test dependencies
+        if: steps.preview.outputs.url != ''
+        run: npm ci
+      - name: Install Chromium
+        if: steps.preview.outputs.url != ''
+        run: npx playwright install --with-deps chromium
+      - name: Wait for the app to wake up
+        if: steps.preview.outputs.url != ''
+        env:
+          PLAYWRIGHT_BASE_URL: ${{ steps.preview.outputs.url }}
+        # Free Render instances may take about a minute to wake up.
+        run: |
+          node --input-type=module <<'NODE'
+          const deadline = Date.now() + 120_000;
+          while (Date.now() < deadline) {
+            try {
+              const response = await fetch(process.env.PLAYWRIGHT_BASE_URL, {
+                signal: AbortSignal.timeout(10_000),
+              });
+              if (response.ok && (await response.text()).includes('<title>JobJourney</title>')) {
+                process.exit(0);
+              }
+            } catch { /* Retry while Render starts the service. */ }
+            await new Promise(resolve => setTimeout(resolve, 5_000));
+          }
+          throw new Error('Render preview did not become ready within two minutes.');
+          NODE
+      - name: Run smoke test against the deployed commit
+        if: steps.preview.outputs.url != ''
+        env:
+          PLAYWRIGHT_BASE_URL: ${{ steps.preview.outputs.url }}
+        run: npm run test:e2e
+      - name: Upload Playwright report and failure artifacts
+        if: ${{ !cancelled() && steps.preview.outputs.url != '' }}
+        uses: actions/upload-artifact@v5
+        with:
+          name: playwright-render-${{ github.event.deployment.id }}-${{ github.run_id }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
