@@ -1,6 +1,6 @@
 # JobJourney
 
-JobJourney is a personal full-stack project for tracking job applications. It brings application records, search, progress charts, and an Excel export into one dashboard. The project uses the MERN stack (MongoDB, Express, React, and Node.js), with a Vite frontend and a REST API.
+JobJourney is a personal full-stack project for tracking job applications. It brings application records, search, progress charts, and an Excel export into one dashboard. The project uses the MERN stack (MongoDB, Express, React(with TypeScript), and Node.js), with a Vite frontend and a REST API.
 
 ## Features
 
@@ -16,18 +16,18 @@ JobJourney is a personal full-stack project for tracking job applications. It br
 
 ## Tech stack
 
-| Area | Libraries and purpose |
-| --- | --- |
-| Frontend | React 19 and React DOM; TypeScript 6; Vite 8 for development and production builds |
-| Routing and forms | React Router 7, using nested routes, loaders, actions, and `<Form>` |
-| Server state | TanStack Query 5 for caching, fetching, and invalidating API data |
-| UI | CSS Modules, global CSS, React Icons, React Toastify 11, and Recharts 3 |
-| HTTP and dates | Axios and Day.js |
-| Backend | Node.js, Express 4, and ES modules |
-| Database | MongoDB (local or Atlas) and Mongoose 9 |
-| Authentication | bcryptjs password hashing and JSON Web Tokens in HTTP-only cookies |
-| API middleware | express-validator, express-rate-limit, Helmet, express-mongo-sanitize, and cookie-parser |
-| Integrations | Cloudinary for avatars, Multer 2 for uploads, Resend for reset emails, and ExcelJS for exports |
+| Area                   | Libraries and purpose                                                                          |
+| ---------------------- | ---------------------------------------------------------------------------------------------- |
+| Frontend               | React 19 and React DOM; TypeScript 6; Vite 8 for development and production builds             |
+| Routing and forms      | React Router 7, using nested routes, loaders, actions, and `<Form>`                            |
+| Server state           | TanStack Query 5 for caching, fetching, and invalidating API data                              |
+| UI                     | CSS Modules, global CSS, React Icons, React Toastify 11, and Recharts 3                        |
+| HTTP and dates         | Axios and Day.js                                                                               |
+| Backend                | Node.js, Express 4, and ES modules                                                             |
+| Database               | MongoDB (local or Atlas) and Mongoose 9                                                        |
+| Authentication         | bcryptjs password hashing and JSON Web Tokens in HTTP-only cookies                             |
+| API middleware         | express-validator, express-rate-limit, Helmet, express-mongo-sanitize, and cookie-parser       |
+| Integrations           | Cloudinary for avatars, Multer 2 for uploads, Resend for reset emails, and ExcelJS for exports |
 | Development and checks | Node's built-in watch mode, concurrently, ESLint 9, Vitest 5, jsdom, and React Testing Library |
 
 Exact installed versions are recorded in the root and `client/` lockfiles.
@@ -65,19 +65,19 @@ node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"
 
 The root `.env` is ignored by Git. Never put server credentials into frontend variables prefixed with `VITE_`, because those variables can be included in browser bundles.
 
-| Variable | Purpose / local default |
-| --- | --- |
-| `NODE_ENV` | `development` enables HTTP request logging; use `production` when deploying |
-| `PORT` | API port; defaults to `5100`. The Vite proxy reads this value from the root environment |
-| `MONGO_URL` | MongoDB connection string; the example uses `mongodb://127.0.0.1:27017/job-journey` |
-| `JWT_SECRET` | Secret used to sign and verify authentication tokens; replace the example value |
-| `JWT_EXPIRES_IN` | Token lifetime; use `1d` to match the current one-day cookie lifetime |
-| `BASE_URL` | Public frontend origin for password-reset links; locally `http://localhost:5173` |
-| `CLOUDINARY_NAME` | Cloudinary cloud name, required for avatar uploads |
-| `CLOUDINARY_API_KEY` | Cloudinary API key, required for avatar uploads |
-| `CLOUDINARY_API_SECRET` | Cloudinary API secret, required for avatar uploads |
-| `RESEND_API_KEY` | Resend API key, required for password-reset emails |
-| `SENDER_EMAIL` | Sender address for reset emails; the example uses `onboarding@resend.dev` |
+| Variable                | Purpose / local default                                                                 |
+| ----------------------- | --------------------------------------------------------------------------------------- |
+| `NODE_ENV`              | `development` enables HTTP request logging; use `production` when deploying             |
+| `PORT`                  | API port; defaults to `5100`. The Vite proxy reads this value from the root environment |
+| `MONGO_URL`             | MongoDB connection string; the example uses `mongodb://127.0.0.1:27017/job-journey`     |
+| `JWT_SECRET`            | Secret used to sign and verify authentication tokens; replace the example value         |
+| `JWT_EXPIRES_IN`        | Token lifetime; use `1d` to match the current one-day cookie lifetime                   |
+| `BASE_URL`              | Public frontend origin for password-reset links; locally `http://localhost:5173`        |
+| `CLOUDINARY_NAME`       | Cloudinary cloud name, required for avatar uploads                                      |
+| `CLOUDINARY_API_KEY`    | Cloudinary API key, required for avatar uploads                                         |
+| `CLOUDINARY_API_SECRET` | Cloudinary API secret, required for avatar uploads                                      |
+| `RESEND_API_KEY`        | Resend API key, required for password-reset emails                                      |
+| `SENDER_EMAIL`          | Sender address for reset emails; the example uses `onboarding@resend.dev`               |
 
 For Resend, use a sender and recipient permitted by your account. A deployed app should use a verified sending domain. Without a Resend key, the app still starts, and the reset endpoint reports that email is not configured.
 
@@ -132,19 +132,19 @@ client/
 
 All paths below are relative to `/api/v1`. Protected endpoints expect the `token` cookie set by login.
 
-| Method | Path | Purpose | Access |
-| --- | --- | --- | --- |
-| POST | `/auth/register` | Create an account | Public |
-| POST | `/auth/login` | Sign in and set the cookie | Public |
-| GET | `/auth/logout` | Expire the cookie | Public |
-| POST | `/auth/reset` | Email a password-reset link | Public |
-| POST | `/auth/newpassword` | Change a password using a reset token | Public, valid token required |
-| GET / POST | `/jobs` | List or create applications | Signed in |
-| GET / PATCH / DELETE | `/jobs/:id` | Read, update, or delete an application | Owner or admin |
-| GET | `/jobs/stats` | Status counts and monthly applications | Signed in |
-| GET | `/jobs/downloadExcel` | Download all owned jobs as XLSX | Signed in |
-| GET / PATCH | `/users/current` | Read or update a profile (multipart form for an avatar) | Signed in |
-| GET | `/admin/app-stats` | Total users and jobs | Admin |
+| Method               | Path                  | Purpose                                                 | Access                       |
+| -------------------- | --------------------- | ------------------------------------------------------- | ---------------------------- |
+| POST                 | `/auth/register`      | Create an account                                       | Public                       |
+| POST                 | `/auth/login`         | Sign in and set the cookie                              | Public                       |
+| GET                  | `/auth/logout`        | Expire the cookie                                       | Public                       |
+| POST                 | `/auth/reset`         | Email a password-reset link                             | Public                       |
+| POST                 | `/auth/newpassword`   | Change a password using a reset token                   | Public, valid token required |
+| GET / POST           | `/jobs`               | List or create applications                             | Signed in                    |
+| GET / PATCH / DELETE | `/jobs/:id`           | Read, update, or delete an application                  | Owner or admin               |
+| GET                  | `/jobs/stats`         | Status counts and monthly applications                  | Signed in                    |
+| GET                  | `/jobs/downloadExcel` | Download all owned jobs as XLSX                         | Signed in                    |
+| GET / PATCH          | `/users/current`      | Read or update a profile (multipart form for an avatar) | Signed in                    |
+| GET                  | `/admin/app-stats`    | Total users and jobs                                    | Admin                        |
 
 `GET /jobs` accepts `search`, `jobStatus`, `jobType`, `sort`, `page`, and `limit`. Use `all` for an unrestricted status/type; sorting accepts `newest`, `oldest`, `a-z`, and `z-a`. Unknown API paths return a JSON 404 response.
 
@@ -152,19 +152,19 @@ All paths below are relative to `/api/v1`. Protected endpoints expect the `token
 
 Run from the repository root unless specified otherwise:
 
-| Command | Purpose |
-| --- | --- |
-| `npm run setup-project` | Install locked server and client dependencies |
-| `npm run dev` | Run server and client together |
-| `npm run server` / `npm run client` | Run either development process separately |
-| `npm run build-client` | Build the frontend into `client/dist` |
-| `npm run lint` | Lint frontend source, tests, and configuration |
-| `npm run typecheck` | Check frontend and component-test types without emitting files |
-| `npm test` | Run backend smoke tests, then frontend component tests once |
-| `npm run test --prefix client` | Run frontend tests in watch mode |
-| `npm run test:ui --prefix client` | Open the Vitest UI |
-| `npm run setup-production` | Install both packages including build tools, then build the frontend |
-| `npm start` | Run the API and serve the built frontend |
+| Command                             | Purpose                                                              |
+| ----------------------------------- | -------------------------------------------------------------------- |
+| `npm run setup-project`             | Install locked server and client dependencies                        |
+| `npm run dev`                       | Run server and client together                                       |
+| `npm run server` / `npm run client` | Run either development process separately                            |
+| `npm run build-client`              | Build the frontend into `client/dist`                                |
+| `npm run lint`                      | Lint frontend source, tests, and configuration                       |
+| `npm run typecheck`                 | Check frontend and component-test types without emitting files       |
+| `npm test`                          | Run backend smoke tests, then frontend component tests once          |
+| `npm run test --prefix client`      | Run frontend tests in watch mode                                     |
+| `npm run test:ui --prefix client`   | Open the Vitest UI                                                   |
+| `npm run setup-production`          | Install both packages including build tools, then build the frontend |
+| `npm start`                         | Run the API and serve the built frontend                             |
 
 Backend tests use temporary localhost servers and mocked database methods; they do not require MongoDB, Cloudinary, or Resend credentials. Frontend tests cover form fields, navigation, sidebars, chart switching, search reset, route validation and errors, and isolation of the backend environment from Vite. Live database and external-service behavior still needs manual verification with your own development accounts.
 
