@@ -1,0 +1,44 @@
+name: Playwright E2E
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: playwright-pr-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    name: E2E smoke (Chromium)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            client/package-lock.json
+      - name: Install dependencies
+        run: npm run setup-project
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run smoke test against a fresh frontend build
+        run: npm run test:e2e
+      - name: Upload Playwright report and failure artifacts
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v5
+        with:
+          name: playwright-pr-${{ github.run_id }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
